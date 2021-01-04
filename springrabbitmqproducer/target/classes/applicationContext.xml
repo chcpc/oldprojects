@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 配置包扫描 -->
+    <context:component-scan base-package="com.woniuxy.rabbitmq"></context:component-scan>
+    <!-- 配置连接工厂信息 -->
+    <rabbit:connection-factory id="factory" password="admin" username="admin" host="192.168.109.131" port="5672" virtual-host="/test"></rabbit:connection-factory>
+    <!-- 配置交换机：topic_exchange -->
+    <!--  参数1：设定交换机名称，参数2：设定自动创建交换机  -->
+    <rabbit:topic-exchange name="topic_exchange" auto-declare="true"></rabbit:topic-exchange>
+    <!-- admin用来管理创建队列及交换机 -->
+    <rabbit:admin connection-factory="factory"></rabbit:admin>
+    <!-- 配置RabbitTemplate简化Rabbit开发 -->
+    <rabbit:template id="rabbitTemplate" exchange="topic_exchange" connection-factory="factory"></rabbit:template>
+
+
+</beans>

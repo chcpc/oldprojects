@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="language" content="zh-CN">
+	<!-- jqGrid组件基础样式包-必要 -->
+	<script src="/Content/scripts/jquery/jquery-1.10.2.min.js"></script>
+	<link href="/Content/styles/font-awesome.min.css" rel="stylesheet" />
+	<link href="/Content/scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+	<script src="/Content/scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<!--框架必需end-->
+	<!--bootstrap组件start-->
+	<link href="/Content/scripts/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<script src="/Content/scripts/bootstrap/bootstrap.min.js"></script>
+	<script src="/Content/scripts/plugins/layout/jquery.layout.js"></script>
+	<script src="/Content/scripts/plugins/datepicker/WdatePicker.js"></script>
+	<link href="/Content/scripts/plugins/jqgrid/jqgrid.css" rel="stylesheet"/>
+	<link href="/Content/scripts/plugins/datetime/pikaday.css" rel="stylesheet"/>
+	<script src="/layer/layer.js"></script>
+	<link href="/Content/styles/jet-ui.css" rel="stylesheet"/>
+	<script src="/Content/scripts/plugins/jqgrid/grid.locale-cn.js"></script>
+	<script src="/Content/scripts/plugins/jqgrid/jqgrid.js"></script>
+	<script src="/Content/scripts/plugins/tree/tree.js"></script>
+	<script src="/Content/scripts/plugins/validator/validator.js"></script>
+	<script src="/Content/scripts/plugins/datepicker/DatePicker.js"></script>
+	<script src="/Content/scripts/utils/jet-ui.js"></script>
+	<script src="/Content/scripts/utils/jet-form.js"></script>
+
+	<style>
+		body {
+			margin: 10px;
+			margin-bottom: 0px;
+		}
+	</style>
+</head>
+	<body>
+	<div class="titlePanel">
+		<div  class="title-search">
+			<table>
+				<tr>
+					<td>
+						<div id="queryCondition" class="btn-group">
+							<a class="btn btn-default dropdown-text" data-value="code"
+							   data-toggle="dropdown">选择条件</a>
+							<a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span
+									class="caret"></span></a>
+							<ul id="queryLi" class="dropdown-menu">
+							</ul>
+						</div>
+					</td>
+					<td id="keyWord" style="padding-left: 2px;">
+						<input  id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width: 200px;"/>
+					</td>
+					<td style="padding-left: 5px;">
+						<a id="btn_Search" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+						<a id="btn_HigtSearch" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;高级查询</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="toolbar">
+			<div class="btn-group">
+				<a id="order-export" class="btn btn-default" onclick="orderExport();">导出</a>
+				<a id="uploadify" class="btn btn-default" onclick="orderImport();">导入</a>
+				<a id="replace" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+				<a id="order-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				<a id="order-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+				<a id="order-delete" class="btn btn-default" onclick="btn_delete(0)"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</div>
+			<div class="btn-group">
+				<a id="order-buttonhorize" class="btn btn-default" onclick="ConfirmAll()"><i class="fa fa-th"></i>&nbsp;批量确认</a>
+			</div>
+			<div class="btn-group">
+				<a id="order-abnormal" class="btn btn-default" onclick="AbnormalFrom()"><i class="fa fa-th"></i>&nbsp;异常修改</a>
+			</div>
+			<div class="btn-group">
+				<a id="order-copy" class="btn btn-default" onclick="copyOrder()"><i class="fa fa-th"></i>&nbsp;复制新建</a>
+			</div>
+			<!--<script>$('.toolbar').authorizeButton()</script>-->
+		</div>
+
+	</div>
+	<div class="gridPanel">
+		<!-- id名必须为以下内容，否则一些功能用不了 -->
+		<table id="gridTable"></table>
+		<div id="gridPager"></div>
+	</div>
+		<script type="text/javascript">
+/* -----------------------------初始化  开始  -------------------------------- */
+//当 DOM（文档对象模型） 已经加载，并且页面（包括图像）已经完全呈现时，会发生 ready 事件。
+
+// 入口函数，知道要执行这些函数就行了
+$(function () {
+	// 初始化页面
+	InitialPage();
+	// 加载表格
+	GetGrid();
+	// 初始化高级查询
+	initHigtQuery($("#btn_HigtSearch"),$('#gridTable'));
+});
+/* -----------------------------加载表数据-------------------------------- */
+// 一、初始化页面，可以不管该部分，别改动
+function InitialPage() {
+	//resize重设(表格、树形)宽高
+	$(window).resize(function (e) {
+		window.setTimeout(function () {
+			$('#gridTable').setGridWidth(($('.gridPanel').width()));
+			$("#gridTable").setGridHeight($(window).height() - 136.5);
+		}, 200);
+		e.stopPropagation();
+	});
+}
+// 二、加载表格，从这里开始了解
+function GetGrid() {
+	var selectedRowIndex = 0;
+	//获取gridTable元素，调用jqGrid方法
+	var $gridTable = $('#gridTable');
+	$.jgrid.defaults.styleUI="Bootstrap";
+	$gridTable.jqGrid({
+		//一、前端设定表格选项：
+		//1.表名
+		// caption:"测试表",//表格名称
+		//2.是否可隐藏
+		hidegrid:false,//当caption为true，设定是否可以隐藏表格，点击可以隐藏。为false则没有该键，默认false
+		//3.表格高度
+		// 设定表格中内容的最大高度（px），可以是像素、百分比、也可以自动变化
+		// height: "auto",//自动高度，随行数变jQuery(document).height()则
+		height: $(window).height() - 136.5, //设置为页面高度-136.5px
+		//4.表格宽度
+		autowidth:true,//自适应宽度
+		shrinkToFit:true,//此属性用来说明当初始化列宽度时候的计算类型，如果为ture，则按比例初始化列宽度。如果为false，则列宽度使用colModel指定的宽度
+		/*  autoScroll: false, */
+		/*forceFit: true, */ //当为ture时，调整列宽度不会改变表格的宽度。当shrinkToFit 为false时，此属性会被忽略
+
+		/* 5.pager：分页部位,可调整。将分页内容填入到指定元素中，最好与表格table在同一父元素中 */
+		pager:"#gridPager",
+		viewrecords:true,//是否要显示总记录数，可以试着注释掉查看效果
+
+		//6.行序列
+		rownumbers: true,// 是显示行序列,为真则会在表格左边新增一列,显示顺序号,从1开始地址
+		rownumWidth: 25,//如果rownumbers为true，则可以设置column的宽度
+
+		//7.选择框部分
+		multiselect: true,//使用选择框
+		multiselectWidth:40,//设置选择框的宽度
+		beforeSelectRow: true,//启用单选方法
+		beforeSelectRow:function(){//单选方法，去掉该方法就可以实现多选
+			$("#gridTable").jqGrid('resetSelection');
+			return true;
+		},
+		//二、核心部分（与服务器交互部分）
+		url:"/index",//ajax请求地址，当datatype为local时此项无效
+		mtype:"POST",//ajax请求方式，默认GET,一般不用调整
+		datatype:"json",// 设置数据交互格式
+		/* 1.列设置：
+        * 页面展示的列名等信息，需要在此处确定，需要指定页面中展示列名、对应的数据、以及每列属性设置。
+        * colNames：即表格的列名称，按照顺序排列
+        * colNodel：表格模型。指定表格的index（与传来的json格式数据的键对应）、name（当没有colNames时起到命名的作用）
+        * 可以试着注释掉colNames查看效果
+        *   */
+		colNames: ['ID', '常规列', '状态或类型列', '时间列'],
+		colModel: [
+
+			// 主键列（可隐藏，子表会用到name为id的这列）
+			{ name: 'id', index: 'id', sortable: false ,hidden: true, },
+
+			// 常规列
+			{ label: '常规列',name: 'basic', index: 'basic',
+				sortable: false, type:"text", frozen:true},
+
+			// 状态列:
+			{ label:'状态或类型列', name: 'status', index: 'status',
+				resizable: true, width: 50, align: 'center', formatter:"integer",
+				formatoptions: { defaultValue: '无数据'}, type:"text", frozen:true, selectDefault:true},
+
+			// 时间列:可解析java的date类型数据（注意，serverTimeZone=UTC）
+			// 	① 如果后台设置了spring:jackson:data-format时亦可转换，但要声明完整时间：YYYY-mm-dd HH:mm:ss，如果缺少时分秒，则时分秒皆为0
+			//	② 如果只要年月日，则将formatoptions里改为{newformat:'Y-m-d'},可参照源码grid.locale-cn.js
+			{ label:'时间列', name: 'time', index: 'time',formatter:"date",
+				formatoptions:{srcformat: 'Y-m-d H:i:s',newformat:'Y-m-d H:i:s'},
+				type:"date", frozen:true}
+			// 	③ 第二种时间格式化方法
+/*			{ name: 'time', index: 'time',formatter:"date",formatter:function(cellvalue, options, row){
+					if(cellvalue == null || cellvalue == undefined || cellvalue ==""){
+						return "";
+					}
+					return new Date(cellvalue).format("yyyy-MM-dd hh:mm:ss")
+				}}*/
+		],
+		// 其他功能，暂时可以不看，要使用再来一个个找
+		/*
+		* 1.1 hidden,为true则在初始化表格时隐藏该列
+		* 1.2 label,如果colNames为空则用此值来作为列的显示名称，如果都没有设置则使用name 值
+		* 1.3 sortable,是否可排序，不设定时默认true，点击列头测试
+		* 1.4 resizable,是否可以调整宽度
+		* 1.5 width,默认列的宽度，只能是象素值，不能是百分比
+		* 1.6 align,对齐，不设置默认left，可选：left、right、center
+		* 1.7 formatter,对列进行格式化时设置的函数名或者类型
+		* 	类型有int/integer 整型,float/number/currency 浮点型，date 日期，text 文本，function 定义函数来实现自定的排序规则。
+		* 1.8 formatoptions,对某些列进行格式化的设置
+		* 1.9 defaultValue,当单元格值为空（null）时，可以在前端设置显示默认值
+		* 1.10 type,jet-ui中定义的属性，作为条件查询时的样式，例如text、date
+		* 1.11 forzen,jet-ui中定义的属性，设定该值是否可作为查询条件
+		* 1.12 selectDefault 默认单条件查询列
+		* */
+
+		// 2.页面设置
+		rowNum : 20,// 初始每页显示的行数，该数值会提交到后台
+		rowList : [ 10, 20, 30 ],// 一个数组用来调整表格显示的记录数，此参数值会替代rowNum参数值传给服务器端。
+		page: 1,// 默认初始页数，不设置该属性时默认为1，会传递给后台
+		// 3.jsonReader：
+		// 很重要 定义了 后台分页参数的名字。
+		// 传来的json数据需要指定其含义（相当于自动帮你取出对应属性）
+		jsonReader: {
+			root:"rows",//包含实际数据的查询数组
+			page:"page",//当前页
+			total:"total",//总页数
+			records:"records",//查询出的记录数
+			repeatitems:true,//指明每行的数据是可以重复的，如果设为false，则会从返回的数据中按名字来搜索元素，这个名字就是colModel中的名字
+			id : "id" //行id
+		},
+		// 4.prmNames:
+		//很重要 定义了页面传递到后台的参数名称
+		prmNames: {//发送数据到服务器，当参数为null时不会被发到服务器端
+			page: "page",//当前页
+			rows: "rows"//页大小
+		},
+		// 多级表格（子表）
+		subGrid:true,//开启子表
+		// 设置子表模型，分为展开方法和关闭方法，方法名是jqgrid设定的，我们可以自定义内容
+		// 子表格的id；当子表格展开的时候，在主表格中会创建一个div元素用来容纳子表格，
+		// subgrid_id就是展开的子表格div的id
+		// row_id就是当前列的id，就是前面name为id的那一列，可用于子表外键查询对应子表中的信息
+		subGridRowExpanded : function(subgrid_id, row_id) {//子表格容器的id和需要展开子表格的行id
+
+			bindSubGrid(subgrid_id, row_id);
+
+		},
+		//初始化查询页面
+	});
+	// 初始化查询页面
+	initJGGridselectView($gridTable);
+	// 设置列属性中带有forzen为true的加入到查询条件中
+	$gridTable.jqGrid('setFrozenColumns');
+	// 注意，要想使某个属性作为查询条件，该列必须有label、type属性，且forzen为true
+}
+//子表格方法
+function bindSubGrid(subgrid_id, collectLineId) {
+	alert('subgrid_id:'+subgrid_id);
+	alert('collectLineId:'+collectLineId);
+	var subgrid_table_id;
+	subgrid_table_id = subgrid_id + "_t"; // (3)根据subgrid_id定义对应的子表格的table的id
+
+	var subgrid_pager_id;
+	subgrid_pager_id = subgrid_id + "_pgr" // (4)根据subgrid_id定义对应的子表格的pager的id
+
+	// (5)动态添加子报表的table和pager
+	$("#" + subgrid_id)
+			.html(
+					"<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+subgrid_pager_id+"' class='scroll'></div>");
+	// (6)创建jqGrid对象
+	$("#" + subgrid_table_id)
+			.jqGrid(
+					{
+						caption:"子表（二级表）",
+						url : '/sub', // (7)子表格数据对应的url，注意传入的contact.id参数
+						datatype : "json",
+						postData: {id: collectLineId},
+						colNames : [ 'subid', '内容'],
+						colModel : [ {
+							name : "id",
+							index : "subid",
+							width : 50,
+							// key : true
+						}, {
+							name : "content",
+							index : "content",
+							width : 100
+						}],
+						rowNum : 10,
+						rowList : [ 10, 20, 30 ],
+						pager : subgrid_pager_id,
+						mtype : "GET",
+						viewrecord : true,
+						jsonReader : {
+							root:"rows",//包含实际数据的查询数组
+							page:"page",//当前页
+							total:"total",//总页数
+							records:"records",//查询出的记录数
+							repeatitems:true,//指明每行的数据是可以重复的，如果设为false，则会从返回的数据中按名字来搜索元素，这个名字就是colModel中的名字
+							id : "id" //行id
+						},
+						prmNames: {//发送数据到服务器，当参数为null时不会被发到服务器端
+							page: "page",//当前页
+							rows: "rows",//页大小
+							// id: "id"
+						},
+						gridComplete : function() { // 数据加载完成后 添加 采购按钮
+							var ids = jQuery("#" + subgrid_table_id)
+									.jqGrid('getDataIDs');
+							for (var i = 0; i < ids.length; i++) {
+								var id = ids[i];
+								var editBtn = "<div class='btnBox'> "
+										+ "<button   class='btn btn-primary' οnclick='editItem("
+										+ id
+										+ ")'>编辑</button>    "
+										+ "<button  class='btn btn-primary' οnclick='deleteItem("
+										+ subgrid_table_id + "," + id
+										+ ")'>删除</button></div>";
+								$("#" + subgrid_table_id).jqGrid(
+										'setRowData', id, {
+											edit : editBtn
+										});
+							}
+						},
+					});
+}
+/*----------------------------以下暂未启用---------------------------------*/
+// 修改异常
+function openAb(id){
+	dialogOpen({
+		id: "OrderAblist",
+		title: '修改异常',
+		url: 'jsp/TransportOrder/OrderAblist.jsp?id=' + id,
+		width: "1150px",
+		height: "750px",
+		btn:[],
+	});
+}
+//新增明细
+function  addSubGrid(id,jggirdId){
+	$.ConfirmAjax({
+		msg: "注：您确定要增加一个明细吗？",
+		url: "/transportorder/addSubJgGird.action",
+		param: { id:id,shipmentSign:false},
+		success: function (data) {
+			if (data.result) {
+				dialogMsg(data.obj, 1);
+				$("#" + jggirdId).trigger("reloadGrid");
+			} else {
+				dialogMsg(data.obj, -1);
+			}
+		}
+	})
+}
+//删除明细
+function dellSubJgGird(id,jggirdId){
+
+	$.ConfirmAjax({
+		msg: "注：您确定要删除这个明细吗？",
+		url: "/transportorder/dellSubJgGird.action",
+		param: { id:id},
+		success: function (data) {
+			if (data.result) {
+				dialogMsg(data.obj, 1);
+				$("#" + jggirdId).trigger("reloadGrid");
+			} else {
+				dialogMsg(data.obj, -1);
+			}
+		}
+	})
+}
+
+//新增
+function btn_add() {
+	//top.tablist.newTab({ id: "orderForm", title: "新增订单", closed: true, icon: "fa fa fa-user", url: top.contentPath+"/jsp/TransportOrder/OrderForm.jsp" })
+
+
+	var options ={
+		width: "1230px",
+		height: "650px",
+	}
+	var _width = top.$.windowWidth() > parseInt(options.width.replace('px', '')) ? options.width : top.$.windowWidth() + 'px';
+	var _height = top.$.windowHeight() > parseInt(options.height.replace('px', '')) ? options.height : top.$.windowHeight() + 'px';
+	top.layer.open({
+		id: "orderFrom",
+		type: 2,
+		shade: 0.3,
+		title: '订单管理',
+		fix: false,
+		area: [_width, _height],
+		content: top.contentPath +  '/jsp/TransportOrder/OrderForm.jsp',
+		cancel: function () {
+			$("#gridTable").trigger("reloadGrid");
+			if (options.cancel != undefined)
+			{
+				options.cancel();
+			}
+			return true;
+		}
+	});
+//        dialogContent({
+//            id: "Form",
+//            title: '新增订单',
+//            url: 'jsp/CustomerService/Order/OrderForm.jsp',
+//            width: "650px",
+//            height: "420px",
+//            callBack: function (iframeId) {
+//                top.frames[iframeId].AcceptClick();
+//            }
+//        });
+};
+//编辑
+function btn_edit(id) {
+	var keyValue = undefined;
+	if(id == undefined){
+		keyValue = $("#gridTable").jqGridRowValue("id");
+	}else {
+		keyValue = id
+	}
+	if (checkedRow(keyValue)) {
+		//top.tablist.newTab({ id: "orderForm", title: "修改订单", closed: true, icon: "fa fa fa-user", url: top.contentPath+"/jsp/TransportOrder/OrderForm.jsp?keyValue=" + keyValue })
+		var options ={
+			width: "1180px",
+			height: "650px",
+		}
+		var _width = top.$.windowWidth() > parseInt(options.width.replace('px', '')) ? options.width : top.$.windowWidth() + 'px';
+		var _height = top.$.windowHeight() > parseInt(options.height.replace('px', '')) ? options.height : top.$.windowHeight() + 'px';
+		top.layer.open({
+			id: "orderFrom",
+			type: 2,
+			shade: 0.3,
+			title: '修改订单',
+			fix: false,
+			area: [_width, _height],
+			content: top.contentPath +  '/jsp/TransportOrder/OrderForm.jsp?keyValue=' + keyValue,
+			cancel: function () {
+				$("#gridTable").trigger("reloadGrid");
+				if (options.cancel != undefined)
+				{
+					options.cancel();
+				}
+				return true;
+			}
+		});
+	}
+}
+//导出
+function btn_export() {
+	$("#gridTable").ExportToExcel("export.xlsx");
+}
+//用户状态修改(生效、失效)
+function ConfirmAll(status) {
+	var  keyValue = $("#gridTable").jqGridRowValue("id");
+	if (checkedArray(keyValue)) {
+		$.ConfirmAjax({
+			msg: "注：您确定要确认这些订单?确认后不能在更改!",
+			url: "/transportorder/confirmOrder.action",
+			param: { id:keyValue},
+			success: function (data) {
+				if (data.result) {
+					dialogMsg(data.obj, 1);
+					$("#gridTable").trigger("reloadGrid");
+				} else {
+					dialogMsg(data.obj, -1);
+				}
+			}
+		})
+	}
+}
+function btn_delete(ss){
+	var  keyValue = $("#gridTable").jqGridRowValue("id");
+	var  status = $("#gridTable").jqGridRowValue("st");
+	if (checkedArray(keyValue)){
+		$.ConfirmAjax({
+			msg: "注：您确定要删除订单？",
+			url: "/transportorder/deleteOrder.action",
+			param: { tableName:"JC_ORDER",status:status,id: keyValue },
+			success: function (data) {
+				if (data.result) {
+					dialogMsg(data.obj, 1);
+					$("#gridTable").trigger("reloadGrid");
+				} else {
+					dialogMsg(data.obj, -1);
+				}
+			}
+		})
+	}
+}
+function AbnormalFrom(){
+	var  keyValue = $("#gridTable").jqGridRowValue("id");
+	if (checkedRow(keyValue)) {
+		dialogOpen({
+			id: "AbnormalFrom",
+			title: '订单异常修改',
+			url: 'jsp/TransportOrder/OrderForm.jsp?keyValue=' + keyValue+'&source=true',
+			width: "1200px",
+			height: "1000px",
+			btn:[],
+			callBack: function (iframeId) {
+				top.frames[iframeId].AcceptClick();
+			}
+		});
+	}
+}
+
+/**
+ * 查看在途跟踪
+ */
+function  getTrack(id) {
+	// var keyValue = $("#gridTable").jqGridRowValue("id");
+	dialogOpen({
+		id: "TrackFrom",
+		title: '在途跟踪',
+		url: 'jsp/TransportOrder/OrderTrackList.jsp?orderId='+id,
+		width: "900px",
+		height: "400px",
+		callBack: function (iframeId) {
+			top.frames[iframeId].dialogClose();//关闭窗口
+		}
+	});
+}
+
+
+//复制新建
+function copyOrder() {
+	var  keyValue = $("#gridTable").jqGridRowValue("id");
+	var keys=keyValue.split(',')
+	if(keys.length>=1){
+		dialogMsg("请选择一条数据","5");
+	}
+	if (checkedRow(keyValue)) {
+		$.ConfirmAjax({
+			msg: "注：您确定要复制新建此条订单?",
+			url: "/transportorder/copyOrder.action",
+			param: { id:keyValue},
+			success: function (data) {
+				if (data.result) {
+					dialogMsg(data.obj, 1);
+					$("#gridTable").trigger("reloadGrid");
+				} else {
+					dialogMsg(data.obj, -1);''
+				}
+			}
+		})
+	}
+}
+function orderExport(){
+	dialogOpen({
+		id: "order",
+		title: '导出订单数据',
+		url: '/jsp/TransportOrder/orderExport.jsp',
+		width: "650px",
+		height: "450px",
+		btn:[],
+		callBack: function (iframeId) {
+			//  top.frames[iframeId].AcceptClick();
+		}
+	});
+}
+function  orderImport() {
+	dialogOpen({
+		id: "上传EXCEL",
+		title: '订单导入',
+		url: '/jsp/TransportOrder/orderImport.jsp',
+		width: "550px",
+		height: "550px",
+		btn:[],
+		callBack: function (iframeId) {
+			top.frames[iframeId].AcceptClick();
+		}
+	});
+}
+		</script>
+	</body>
+</html>

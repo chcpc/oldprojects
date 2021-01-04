@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="zh-CN">
+    <title>预录单</title>
+    <!--框架必需start-->
+    <script src="/Content/scripts/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/Content/styles/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <script src="/Content/scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!--框架必需end-->
+    <!--bootstrap组件start-->
+    <link href="/Content/scripts/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Content/scripts/bootstrap/bootstrap.min.js"></script>
+    <script src="/Content/scripts/plugins/layout/jquery.layout.js"></script>
+    <script src="/Content/scripts/plugins/datepicker/WdatePicker.js"></script>
+    <link href="/Content/scripts/plugins/jqgrid/jqgrid.css" rel="stylesheet"/>
+    <link href="/Content/scripts/plugins/datetime/pikaday.css" rel="stylesheet"/>
+    <link href="/Content/styles/jet-ui.css" rel="stylesheet"/>
+    <script src="/Content/scripts/plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="/Content/scripts/plugins/jqgrid/jqgrid.js"></script>
+    <script src="/Content/scripts/plugins/tree/tree.js"></script>
+    <script src="/Content/scripts/plugins/validator/validator.js"></script>
+    <script src="/Content/scripts/plugins/datepicker/DatePicker.js"></script>
+    <script src="/Content/scripts/utils/jet-ui.js"></script>
+    <script src="/Content/scripts/utils/jet-form.js"></script>
+    <style>
+        body {
+            margin: 10px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <span>首页</span>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>用户信息</span>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>用户列表</span>
+        </li>
+    </ul>
+</div>
+<!-- END PAGE BAR -->
+<!-- END PAGE HEADER-->
+
+<!-- 用户信息列表 jqgrid start -->
+<div class="row">
+    <div class="col-md-12">
+        <br/>
+
+        <div class="jqGridDemoItemList_wrapper">
+            <table id="jqGridDemoItemList"></table>
+            <div id="jqGridDemoItemPager"></div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+
+    // 重新渲染modal
+    function renderModal() {
+        // 重新渲染ajax modal
+        Common.openAjaxModal('a[name="ajaxDetailUserInfoLink"]', '#ajax-detailItemInfo-modal');
+        Common.openAjaxModal('a[name="ajaxModifyItemLink"]', '#ajax-modifyItem-modal');
+    }
+
+    var reloadItemGrid = function() {
+        var jqGrid = $("#jqGridDemoItemList");
+        var hdnContextPath = $("#hdnContextPath").val();
+        jqGrid.jqGrid('setGridParam',{datatype:'json'}).setGridParam({
+            page: 1,
+            url: hdnContextPath + "/demoItem/getItemInfoList.action",
+        }).trigger("reloadGrid");
+    }
+
+
+    // 商品对象
+    var DemoItemList = function () {
+
+        // 商品列表
+        var handleDemoItemList = function() {
+
+            var hdnContextPath = $("#hdnContextPath").val();
+
+            var jqGrid = $("#jqGridDemoItemList");
+            jqGrid.jqGrid({
+                caption: "商品信息列表",
+                url: "/demo01",
+                mtype: "post",
+                styleUI: 'Bootstrap',//设置jqgrid的全局样式为bootstrap样式
+                datatype: "json",
+                colNames: ['ID', '常规列', '状态或类型列'],
+                colModel: [
+                    { name: 'id', index: 'id', width: 60, sortable: false },
+                    { name: 'basic', index: 'basic', width: 60, sortable: false },
+                    { name: 'status', index: 'status', width: 30, sortable: false }
+                ],
+                viewrecords: true,  		// 定义是否要显示总记录数
+                rowNum: 10,					// 在grid上显示记录条数，这个参数是要被传递到后台
+//            multiselect: true,  		// 定义是否可以多选
+                rownumbers: true,  			// 如果为ture则会在表格左边新增一列，显示行顺序号，从1开始递增。此列名为'rn'
+//            width: 900,
+                autowidth: true,  			// 如果为ture时，则当表格在首次被创建时会根据父元素比例重新调整表格宽度。如果父元素宽度改变，为了使表格宽度能够自动调整则需要实现函数：setGridWidth
+                height: "auto",				// 表格高度，可以是数字，像素值或者百分比
+                rownumWidth: 36, 			// 如果rownumbers为true，则可以设置行号 的宽度
+                pager: "#jqGridDemoItemPager",		// 分页控件的id
+                subGrid: true,				// 是否启用子表格
+                gridComplete: renderModal	// grid加载完毕后重新渲染model
+            }).navGrid('#jqGridDemoItemPager', {
+                edit: true,
+                add: true,
+                del: true,
+                search: true
+            });
+
+
+            // 随着窗口的变化，设置jqgrid的宽度
+            $(window).bind('resize', function () {
+                var width = $('.jqGridDemoItemList_wrapper').width()*0.99;
+                jqGrid.setGridWidth(width);
+            });
+
+            // 不显示水平滚动条
+            jqGrid.closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
+        }
+
+        return {
+            // 初始化各个函数及对象
+            init: function () {
+
+                handleDemoItemList();
+
+            }
+
+        };
+
+    }();
+
+
+    jQuery(document).ready(function() {
+        DemoItemList.init();
+    });
+</script>
+
+
+</body>
+</html>

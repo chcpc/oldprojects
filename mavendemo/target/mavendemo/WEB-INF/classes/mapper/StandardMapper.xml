@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.mapper.StandardMapper">
+  <select id="queryByPage" resultMap="BaseResultMap">
+    select * from standard
+  </select>
+  <resultMap id="BaseResultMap" type="com.woniuxy.pojo.Standard">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stdnum" jdbcType="VARCHAR" property="stdnum" />
+    <result column="zhname" jdbcType="VARCHAR" property="zhname" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="stdkeys" jdbcType="VARCHAR" property="stdkeys" />
+    <result column="releasedate" jdbcType="TIMESTAMP" property="releasedate" />
+    <result column="impldate" jdbcType="TIMESTAMP" property="impldate" />
+    <result column="packagepath" jdbcType="VARCHAR" property="packagepath" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stdnum, zhname, version, stdkeys, releasedate, impldate, packagepath
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from standard
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from standard
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.pojo.Standard">
+    insert into standard (id, stdnum, zhname,
+      version, stdkeys, releasedate,
+      impldate, packagepath)
+    values (#{id,jdbcType=INTEGER}, #{stdnum,jdbcType=VARCHAR}, #{zhname,jdbcType=VARCHAR},
+      #{version,jdbcType=VARCHAR}, #{stdkeys,jdbcType=VARCHAR}, #{releasedate,jdbcType=TIMESTAMP},
+      #{impldate,jdbcType=TIMESTAMP}, #{packagepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.pojo.Standard">
+    insert into standard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stdnum != null">
+        stdnum,
+      </if>
+      <if test="zhname != null">
+        zhname,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="stdkeys != null">
+        stdkeys,
+      </if>
+      <if test="releasedate != null">
+        releasedate,
+      </if>
+      <if test="impldate != null">
+        impldate,
+      </if>
+      <if test="packagepath != null">
+        packagepath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stdnum != null">
+        #{stdnum,jdbcType=VARCHAR},
+      </if>
+      <if test="zhname != null">
+        #{zhname,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="stdkeys != null">
+        #{stdkeys,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedate != null">
+        #{releasedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="impldate != null">
+        #{impldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="packagepath != null">
+        #{packagepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.pojo.Standard">
+    update standard
+    <set>
+      <if test="stdnum != null">
+        stdnum = #{stdnum,jdbcType=VARCHAR},
+      </if>
+      <if test="zhname != null">
+        zhname = #{zhname,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="stdkeys != null">
+        stdkeys = #{stdkeys,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedate != null">
+        releasedate = #{releasedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="impldate != null">
+        impldate = #{impldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="packagepath != null">
+        packagepath = #{packagepath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.pojo.Standard">
+    update standard
+    set stdnum = #{stdnum,jdbcType=VARCHAR},
+      zhname = #{zhname,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      stdkeys = #{stdkeys,jdbcType=VARCHAR},
+      releasedate = #{releasedate,jdbcType=TIMESTAMP},
+      impldate = #{impldate,jdbcType=TIMESTAMP},
+      packagepath = #{packagepath,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

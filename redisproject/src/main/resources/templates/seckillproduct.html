@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/pager.css">
+    <link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/dtk.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="css/ddq.css" />
+    <title>限时抢</title>
+    <meta name="keywords" content="淘宝优惠券,天猫优惠券,优惠券领取网站,商家内部优惠券,优惠券商城"/>
+    <meta name="description" content="淘宝(天猫)商家内部优惠券免费领取网站,独家优惠券直接领取,领取后可直接下单抵扣,价格超实惠。千万淘宝优惠券每天更新,比双11更低!"/>
+</head>
+<body data-appid="798280" data-in="1">
+<!--顶部推荐位s-->
+<div id="testTop"></div>
+<!--顶部推荐位e-->
+<div id="navTop">
+
+    <div id="top">
+        <div id="topleft" style="margin: 0;line-height: 25px;">每天千款优惠券、只为专注精选！                    </div>
+        <ul id="topright" style="line-height: 25px;">
+            <li style=" margin-right: 8px;">
+                <a class="set_home" href="javascript:;" onclick="SetHome(this,window.location)" style="color: #757575" title="将本站设为首页">设为首页</a>
+            </li>
+            <li style="margin-right: 8px;">
+                <a class="add_favorite" href="javascript:;" onclick="shoucang(document.title,window.location)" style="color: #757575" title="加入收藏，方便下次打开">加入收藏</a>
+            </li>
+            <li>
+                <a class="header_service" target="_blank" href="javascript:;" style="color: #8da7cb" title="联系我帮你解答">遇到购物问题? 联系我 ></a>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="headNav">
+    <div id="header" style="padding-bottom: 16px;">
+        <a class="header_logo" href="javascript:;" style="width: 380px; height: 80px;display: inline-block;float: left;    background-size: inherit;    background: url('')left top no-repeat;    margin-top: -7px;text-align: left;line-height: 80px;font-size: 36px;padding-left: 20px;">
+          优惠券商城        </a>
+
+        
+        <div id="showList">
+            <div id="search">
+                <input type="hidden" name="h_kw" id="h_kw" value="零食大礼包">
+                <input type="hidden" name="h_url" id="h_url" value="/shop?r=l">
+                <input type="hidden" name="m_url" id="m_url" value="/shop?r=l&kw=%E9%9B%B6%E9%A3%9F%E7%A4%BC%E5%8C%85">
+                <form action="/shop?r=index/index" method="get">
+                    <input type="hidden" name="r" value="l">
+                    <input type="text" autocomplete="off" class="theme-border-color-1 my-src-input" value="" name="kw" placeholder="零食大礼包"/>
+                    <span class="src-close-btn"></span>
+                    <button class="theme-bg-color-1 my-src-btn">搜 索</button>
+                </form>
+                <ul class="search-land"></ul>
+            </div>
+
+            <dl>
+                <dt class="rg"></dt>
+            </dl>
+            <dl>
+                <dt class="zy"></dt>
+            </dl>
+            <dl>
+                <dt class="qc"></dt>
+            </dl>
+
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <!--悬浮搜索框s-->
+        <!--悬浮搜索框e-->
+</div>
+
+<div id="baner" class="theme-bg-color-1">
+    <div id="nav" style="font-size: 15px;">
+        <a href="javascript:;" class="theme-hover-bg-color-8 iconM " style="padding:8px 27px;">
+            <span style="margin-right: 7px;">今日上新</span>
+        </a>
+
+        <a class="theme-hover-bg-color-8 lq_live " href="javascript:;" style="padding:8px 15px;position:relative">
+            领券优惠直播
+                           <div style="background-repeat: no-repeat;position:absolute; width:62px; height:16px; background-image:url(images/618cms.gif?v=123);right:0;top:-16px;"></div>
+                    </a>
+
+        <a class="theme-hover-bg-color-8 active" href="javascript:;" style="padding:8px 15px;">
+            限时抢<div style="position:absolute; width:24px; height:32px; background:#FFCC00;margin-left: 98px; margin-top: -25px; background:url(images/HOTT_qeu.gif)"></div>
+        </a>
+
+        <a class="theme-hover-bg-color-8 iconH " href="javascript:;"  style="padding:8px 15px;">
+            超级人气榜
+        </a>
+
+        <a class="theme-hover-bg-color-8 " href="javascript:;" style="padding:8px 15px;">
+            9块9包邮
+        </a>
+
+        
+    </div>
+</div>
+
+<div id="dtk_mian">
+    <div class="sf_wrap">
+    <div class="banner">
+      <img src="https://img.alicdn.com/imgextra/i1/2053469401/TB29_yfgPlxYKJjSZFuXXaYlVXa_!!2053469401.jpg" alt="">
+    </div>
+    <div class="release-time">
+        <div class="release-time-main">
+            <span class="paly-btn play-prev" data-r="1"></span>
+            <span class="paly-btn play-next" data-r="-1"></span>
+            <div class="time-scroll-cover"></div>
+            <ul style="width:3520px;left: -1320px;">
+
+                                    <li class="" data-type="1310">
+                      <div class="section_item">
+                        <span>10:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1313">
+                      <div class="section_item">
+                        <span>13:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1315">
+                      <div class="section_item">
+                        <span>15:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1317">
+                      <div class="section_item">
+                        <span>17:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1319">
+                      <div class="section_item">
+                        <span>19:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1320">
+                      <div class="section_item">
+                        <span>20:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1321">
+                      <div class="section_item">
+                        <span>21:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1400">
+                      <div class="section_item">
+                        <span>00:00</span>
+                        <p>已开抢</p>
+                      </div>
+                    </li>
+                                    <li class="cur" data-type="1408">
+                      <div class="section_item">
+                        <span>08:00</span>
+                        <p>正在疯抢</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1410">
+                      <div class="section_item">
+                        <span>10:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1413">
+                      <div class="section_item">
+                        <span>13:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1415">
+                      <div class="section_item">
+                        <span>15:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1417">
+                      <div class="section_item">
+                        <span>17:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1419">
+                      <div class="section_item">
+                        <span>19:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1420">
+                      <div class="section_item">
+                        <span>20:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                                    <li class="" data-type="1421">
+                      <div class="section_item">
+                        <span>21:00</span>
+                        <p>即将开始</p>
+                      </div>
+                    </li>
+                            </ul>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="wrapper">
+            <div class="release-list" id="app">
+                <div class="ddq_loadding hide">
+                  <img src="images/ddq_loading.gif" alt="">
+                </div>
+                <!--商品列表-->
+                <ul class="clearfix">
+                    <li th:each="entry:${seckillProducts}">
+                                <a href="javascript:;" target="_blank">
+                                    
+                                    <div class="goods_pic">
+                                        <img th:src="${entry.value.pic}" alt="">
+                                    </div>
+                                    <div class="goods_info">
+                                        <div class="goods_tit_des">
+                                            <h3>[[${entry.value.title}]]</h3>
+                                            <p>[[${entry.value.subTitle}]]</p>
+                                        </div>
+                                        <div class="goods_price_coupon">
+                                           <span class="goods_price">
+                                               <b><i>￥</i>[[${entry.value.promotionPrice}]]</b>券后价
+                                           </span>
+                                            <span class="goods_price_old">￥[[${entry.value.price}]]</span>
+                                            <div class="goods_coupon"><span class="c_l c_coupon"></span></div>
+                                        </div>
+                                        <div class="goods_gobuy_seller ">
+                                            <span class="goods_seller fl"><i></i><b>12634</b>人已抢</span>
+                                            <span class="goods_buy_btn goods-item" th:onclick="seckill([[${entry.value.id}]],[[${entry.key}]])">马上抢</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+
+                     </ul>
+                <!--商品列表结束-->
+            </div>
+
+            <div class="release_next">
+                <img src="images/onroad.png" class="hide" alt="">
+                <p class="ddq_text_buy ddq_text">都是小编精心挑选的必抢好货哦~</p>
+                <p class="ddq_text_next ddq_text hide"> 亲！本场好货还在精心挑选中</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="footer" class="theme-border-top-color-1" style="background-color: #373737;padding-bottom: 30px;width: 100%;border-top: 3px solid #ff3366;">
+    <div class="footer-wrapper " style="width: 1200px;margin: 0 auto;position: relative;text-align: center">
+        <div class="bt">
+            “感谢有你，我们的坚持才更有意义”
+        </div>
+        <div class="author" style="    position: absolute;
+    top: 67px;
+    left: 990px;
+    color: #FFFFFF;
+    font-size: 18px;">by &nbsp;&nbsp;优惠券商城</div>
+        <div class="text" style="color: #a2a2a2; font-size: 16px; margin-top: 33px;">
+            &copy; CopyRight&nbsp;2018            &nbsp;
+            <a href="javascript:;" target="_blank" rel="nofollow" style="color:#a2a2a2;">
+                优惠券商城            </a>
+            &nbsp;
+            <a class="miitbeian" href="javascript:;" target="_blank" rel="nofollow" style="color:#a2a2a2;">
+                            </a>
+            &nbsp;&nbsp;
+            <p style="text-algin:center;margin-top:30px;"></p>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/axios.min.js" ></script>
+<!--<script src="js/buy.js?v=20189822"></script>-->
+<script type="text/javascript">
+        function seckill (productId,psId) {
+                    window.location.href = "seckillProductDetail/"+productId+"/"+psId;
+        }
+</script>
+
+</body>
+</html>

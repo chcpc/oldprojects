@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.mapper.RepliesMapper">
+  <!-- 新增 -->
+  <insert id="insertRepy">
+    INSERT INTO replies (content,infold) VALUES (#{replies.content},#{replies.infold});
+  </insert>
+  <select id="selectRepliesByInfold" resultMap="BaseResultMap">
+    select * from replies WHERE infold=#{infold}
+  </select>
+
+  <resultMap id="BaseResultMap" type="com.woniuxy.pojo.Replies">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="replyTime" jdbcType="TIMESTAMP" property="replytime" />
+    <result column="infold" jdbcType="INTEGER" property="infold" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, content, replyTime, infold
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from replies
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from replies
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.pojo.Replies">
+    insert into replies (id, content, replyTime, 
+      infold)
+    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{replytime,jdbcType=TIMESTAMP}, 
+      #{infold,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.pojo.Replies">
+    insert into replies
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="replytime != null">
+        replyTime,
+      </if>
+      <if test="infold != null">
+        infold,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="replytime != null">
+        #{replytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infold != null">
+        #{infold,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.pojo.Replies">
+    update replies
+    <set>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="replytime != null">
+        replyTime = #{replytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infold != null">
+        infold = #{infold,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.pojo.Replies">
+    update replies
+    set content = #{content,jdbcType=VARCHAR},
+      replyTime = #{replytime,jdbcType=TIMESTAMP},
+      infold = #{infold,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

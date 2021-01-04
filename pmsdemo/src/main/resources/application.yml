@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/pms?serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+  redis:
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 100
+        max-active: 100
+        min-idle: 10
+        max-wait: 1000ms
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss
+  rabbitmq:
+    virtual-host: /test
+    username: admin
+    password: 123
+    port: 5672
+    host: 192.168.171.135
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动签收
+        concurrency: 1
+        prefetch: 10  # 同时最大处理10个消息
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+static:
+  path: e:/temp/detail

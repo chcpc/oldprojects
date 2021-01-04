@@ -1,0 +1,11 @@
+spring:
+  rabbitmq:
+    host: 192.168.109.131
+    port: 5672
+    virtual-host: /test
+    username: admin
+    password: admin
+    template:
+      mandatory: true #开启强制退回消息
+    publisher-confirms: true #开启确认机制
+    publisher-returns: true #开启返回机制

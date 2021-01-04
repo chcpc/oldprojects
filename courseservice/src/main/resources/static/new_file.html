@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		    <title>网课预约</title>
+		    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		    <link rel="shortcut icon" href="/favicon.ico">
+		    <meta name="apple-mobile-web-app-capable" content="yes">
+		    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+		    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+		
+	</head>
+	<body>
+		
+		
+		<div class="page-group">
+		        <!-- 单个page ,第一个.page默认被展示-->
+		        <div class="page">
+		            <!-- 标题栏 -->
+		            <header class="bar bar-nav">
+		                <a class="icon icon-me pull-left open-panel"></a>
+		                <h1 class="title">课程中心</h1>
+		            </header>
+		
+		            <!-- 工具栏 -->
+		            <nav class="bar bar-tab">
+		                <a class="tab-item external active" href="#">
+		                    <span class="icon icon-home"></span>
+		                    <span class="tab-label">首页</span>
+		                </a>
+		                <a class="tab-item external" href="#">
+		                    <span class="icon icon-star"></span>
+		                    <span class="tab-label">收藏</span>
+		                </a>
+		                <a class="tab-item external" href="#">
+		                    <span class="icon icon-settings"></span>
+		                    <span class="tab-label">设置</span>
+		                </a>
+		            </nav>
+		
+		            <!-- 这里是页面内容区 -->
+		            <div class="content">
+		                
+						<div class="content-block">
+						      <div class="list-block">
+								  <form action="" id="fm">
+						        <ul>
+						          <!-- Text inputs -->
+								  <li>
+									  <div class="item-content">
+										  <span id="succMobile"></span>
+									  </div>
+								  </li>
+								  <li>
+								    <div class="item-content">
+								      <div class="item-inner">
+								        <div class="item-title label">手机号</div>
+								        <div class="item-input">
+								         <input name="mobile"  id="mobile"  type="text" placeholder="请输入手机号"/>
+								        </div>
+								      </div>
+								    </div>
+								  </li>
+								  <li>
+								    <div class="item-content">
+								      <div class="item-inner">
+								        <div class="item-title label">请选择课程</div>
+								        <div class="item-input">
+											<select   id="cid" name="cid">
+												<option>--请选择--</option>
+								            </select>
+								        </div>
+								      </div>
+								    </div>
+								  </li>
+						          <li>
+						            <div class="item-content">
+						              <div class="item-inner">
+						                <div class="item-title label">开始时间</div>
+						                <div class="item-input">
+						                 <input id="startTime" name="startTime" type="text"/>
+						                </div>
+						              </div>
+						            </div>
+						          </li>
+								  <li>
+								    <div class="item-content">
+								      <div class="item-inner">
+								        <div class="item-title label">结束时间</div>
+								        <div class="item-input">
+								         <input id="endTime" name="endTime" type="text"/>
+								        </div>
+								      </div>
+								    </div>
+								  </li>
+						        </ul>
+								</form>
+						      </div>
+							   <div class="content-block">
+							      <div class="row">
+							        <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+							        <div class="col-50"><a href="#" onclick="checkMobile()" class="button button-big button-fill button-success">提交</a></div>
+							      </div>
+							    </div>
+						    </div>
+		            </div>
+		        </div>
+		
+		        <!-- 其他的单个page内联页（如果有） -->
+		        <div class="page">kdsakfkasdfk</div>
+		    </div>
+		
+		    <!-- popup, panel 等放在这里 -->
+		    <div class="panel-overlay"></div>
+		    <!-- Left Panel with Reveal effect -->
+		    <div class="panel panel-left panel-reveal">
+		        <div class="content-block">
+		            <p>这是一个侧栏</p>
+		            <p></p>
+		            <!-- Click on link with "close-panel" class will close panel -->
+		            <p><a href="#" class="close-panel">关闭</a></p>
+		        </div>
+		    </div>
+			
+			
+			
+			<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+			<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+			<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+			
+			
+			
+			<script type="text/javascript">
+				$("#startTime,#endTime").calendar({});
+				
+				
+				$(function(){
+						// $.get("http://localhost:9000/course/list","",function(result){
+						// 	alert(result);
+						// })
+
+						$.ajax({
+							url:'http://localhost:9000/course/list',
+							type:'get',
+							dataType:'json',
+							success:function(result){
+								console.log(result+"???");
+								var $sel = $("#cid");
+								$.each(result,function(index,obj){
+									var $option = $("<option>").html(obj.cname).attr("value",obj.cid);
+									$sel.append($option);
+									
+								})
+								
+							}
+						})
+				})
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			// 	function checkMobile(){
+			// 		var mobile = $("#mobile").val();
+			// 		// $.ajax({
+			// 		// 	url : "http://localhost:9000/member/check" , 
+			// 		// 	data : {"mobile" : mobile} ,
+			// 		// 	type : "get",
+			// 		// 	dataType : "json" ,
+			// 		// 	success : function(json){
+			// 		// 		if(json.code == "0"){
+			// 		// 			$("#succMobile").text("会员:" + json.data.name);
+			// 		// 			$("#succMobile").show();
+			// 		// 			
+			// 		// 		}else{
+			// 		// 			$.alert(json.message)
+			// 		// 		}
+			// 		// 	}
+			// 		// })
+			// 		
+			// 		sub();//订阅
+			// 
+			// 	}
+			// 	
+			// 	$.ajax({
+			// 		url : "http://localhost:9000/course/list" ,
+			// 		type : "get" , 
+			// 		dataType : "json" , 
+			// 		success : function(json){
+			// 			var courses = json.data;
+			// 			for(var i = 0 ; i < courses.length ; i++){
+			// 				var course = courses[i];
+			// 				var o = $("<option>").attr("value",course.cid).text(course.cname);
+			// 				$("#cid").append(o);
+			// 			}
+			// 		}
+			// 	})
+			// 	
+			// 	
+			// 	function sub(){
+			// 		var param = $("#fm").serialize();
+			// 		console.log(param);
+			// 		$.ajax({
+			// 			url : "http://localhost:9000/course/sub" ,
+			// 			data : param ,
+			// 			dataType : "json" , 
+			// 			type : "post",
+			// 			success : function(json){
+			// 				console.info(json);
+			// 				if(json.code =="0"){
+			// 					$.alert("预约成功" , function(){
+			// 						window.location.reload();
+			// 					});
+			// 				}else{
+			// 					$.alert(json.message);
+			// 				}
+			// 			}
+			// 		})
+			// 	}
+			</script>
+					
+
+	</body>
+</html>

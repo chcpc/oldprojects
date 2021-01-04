@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: dev
+---
+#配置服务应用名称和端口号
+spring:
+  application:
+    name: registry
+  profiles: dev
+server:
+  port: 8761
+#EurekaServer本身既是客户端优势服务端，因此也要在注册中心注册
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+    register-with-eureka: false #表示EurekaServer本身不在服务中心显示
+    fetch-registry: false #不查找自身注册信息
+---
+#配置服务应用名称和端口号
+spring:
+  application:
+    name: registry
+  profiles: prd
+server:
+  port: 8762
+#EurekaServer本身既是客户端又是服务端，因此也要在注册中心注册
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+    register-with-eureka: false #表示EurekaServer本身不在服务中心显示
+    fetch-registry: false #不查找自身注册信息

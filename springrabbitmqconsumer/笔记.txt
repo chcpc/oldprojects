@@ -1,0 +1,63 @@
+1，导入依赖
+    spring-rabbit
+2.生产者
+
+      <rabbit:connection-factory id="factory" port="5672" host="192.168.171.134" virtual-host="/test" username="admin" password="123"></rabbit:connection-factory>
+
+       <rabbit:topic-exchange name="topic_exchange" auto-declare="true" ></rabbit:topic-exchange>
+
+       <rabbit:admin connection-factory="factory"></rabbit:admin>
+
+       <rabbit:connection-factory id="factory" port="5672" host="192.168.171.134" virtual-host="/test" username="admin" password="123"></rabbit:connection-factory>
+bbit:template id="rabbitTemplate" exchange="topic_exchange"  connection-factory="factory">
+       </rabbit:template>
+
+       注入RabbitTemplate
+         convertAndSend(Object);
+         convertAndSend(key,Object);
+
+
+3.消费者:
+    1)工厂
+   <rabbit:connection-factory id="factory" port="5672" host="192.168.171.134" virtual-host="/test" username="admin" password="123"></rabbit:connection-factory>
+    2）队列
+        <rabbit:queue name="xc_queue" auto-declare="true" auto-delete="false" exclusive="false" durable="false">
+            </rabbit:queue>
+
+   3)交换机并绑定队列
+ <rabbit:topic-exchange name="topic_exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="xc_queue" pattern="#"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+   4)admin
+  <rabbit:admin connection-factory="factory"></rabbit:admin>
+   5）bean: 消费者
+        <bean class="com.woniu.rabbitms.Consumer" id="consumer"></bean>
+   6) 监听器:
+
+    <rabbit:listener-container connection-factory="factory">
+            <rabbit:listener ref="consumer" method="recv" queue-names="xc_queue" ></rabbit:listener>
+        </rabbit:listener-container>
+
+    7)代码：
+        消费者
+         public void recv(Map<String,String> map){
+                System.out.println("接收");
+                for(Map.Entry<String,String> entry : map.entrySet()){
+                    System.out.println(entry.getKey()+":"+entry.getValue());
+                }
+            }
+
+
+4，消息确认，返回机制
+    channel.confirmSelect()
+    channel.addConfirmLis....
+
+    channel.addReturnList...
+
+
+
+
+
+

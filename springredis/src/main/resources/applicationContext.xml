@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 配置Jedis连接池 -->
+    <bean id="config" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 配置最大连接数量 -->
+        <property name="maxTotal" value="100"></property>
+        <!-- 配置最大等待时间 -->
+        <property name="maxWaitMillis" value="10000"></property>
+        <!-- 配置最大空闲连接数 -->
+        <property name="maxIdle" value="20"></property>
+        <!-- 配置最小空闲连接数 -->
+        <property name="minIdle" value="10"></property>
+
+        <property name="testOnCreate" value="false"></property>
+        <property name="testOnBorrow" value="false"></property>
+        <property name="testOnReturn" value="false"></property>
+        <property name="testWhileIdle" value="true"></property>
+    </bean>
+    <!-- 配置Jedis连接工厂 -->
+    <bean id="factory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+    p:usePool="true" p:poolConfig-ref="config" p:hostName="192.168.109.131" p:port="6666" p:password="123456">
+    </bean>
+    <!-- 配置Redis模板 -->
+    <bean id="template" class="org.springframework.data.redis.core.RedisTemplate" >
+        <!-- 配置jedis连接工厂 -->
+        <property name="connectionFactory" ref="factory"></property>
+        <!-- 配置各个连接工厂 -->
+        <!-- 配置key -->
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+        </property>
+        <!-- 配置value -->
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"></bean>
+        </property>
+        <!-- 配置hash的key的数据类型 -->
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+        </property>
+        <!-- 配置hash的value的数据类型 -->
+        <property name="hashValueSerializer">
+           <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"></bean>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.pmsdemo.dao.ProductParamMapper">
+  <resultMap id="BaseResultMap" type="com.woniu.pmsdemo.pojo.ProductParam">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_param_name" jdbcType="VARCHAR" property="productParamName" />
+    <result column="product_param_value" jdbcType="VARCHAR" property="productParamValue" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_param_name, product_param_value, product_id, sort, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_param
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_product_param
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.woniu.pmsdemo.pojo.ProductParam">
+    insert into t_product_param (id, product_param_name, product_param_value, 
+      product_id, sort, type
+      )
+    values (#{id,jdbcType=INTEGER}, #{productParamName,jdbcType=VARCHAR}, #{productParamValue,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniu.pmsdemo.pojo.ProductParam">
+    insert into t_product_param
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productParamName != null">
+        product_param_name,
+      </if>
+      <if test="productParamValue != null">
+        product_param_value,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="productParamName != null">
+        #{productParamName,jdbcType=VARCHAR},
+      </if>
+      <if test="productParamValue != null">
+        #{productParamValue,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniu.pmsdemo.pojo.ProductParam">
+    update t_product_param
+    <set>
+      <if test="productParamName != null">
+        product_param_name = #{productParamName,jdbcType=VARCHAR},
+      </if>
+      <if test="productParamValue != null">
+        product_param_value = #{productParamValue,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniu.pmsdemo.pojo.ProductParam">
+    update t_product_param
+    set product_param_name = #{productParamName,jdbcType=VARCHAR},
+      product_param_value = #{productParamValue,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

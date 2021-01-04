@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>商品详情</title>
+    <meta name="keywords" content="淘宝优惠券,天猫优惠券,优惠券领取网站,商家内部优惠券,优惠券商城"/>
+    <meta name="description" content="淘宝(天猫)商家内部优惠券免费领取网站,独家优惠券直接领取,领取后可直接下单抵扣,价格超实惠。千万淘宝优惠券每天更新,比双11更低!"/>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css?v=201806121902">
+    <link rel="stylesheet" type="text/css" href="../css/dtk.css?v=201806121902">
+    <link rel="stylesheet" type="text/css" href="../css/detail.css?v=201806121902" />
+    <link href="../layui/css/layui.css" rel="stylesheet">
+    <script src="../layui/layui.all.js"></script>
+</head>
+<body>
+<!--顶部推荐位s-->
+<div id="testTop"></div>
+<!--顶部推荐位e-->
+<div id="navTop">
+
+    <div id="top">
+        <div id="topleft" style="margin: 0;line-height: 25px;">每天千款优惠券、只为专注精选！                    </div>
+        <ul id="topright" style="line-height: 25px;">
+            <li style=" margin-right: 8px;">
+                <a class="set_home" href="javascript:;" onclick="SetHome(this,window.location)" style="color: #757575" title="将本站设为首页">设为首页</a>
+            </li>
+            <li style="margin-right: 8px;">
+                <a class="add_favorite" href="javascript:;" onclick="shoucang(document.title,window.location)" style="color: #757575" title="加入收藏，方便下次打开">加入收藏</a>
+            </li>
+            <li>
+                <a class="header_service" target="_blank" href="javascript:;" style="color: #8da7cb" title="联系我帮你解答">遇到购物问题? 联系我 ></a>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="headNav">
+    <div id="header" style="padding-bottom: 16px;">
+        <a class="header_logo" href="javascript:;" style="width: 380px; height: 80px;display: inline-block;float: left;    background-size: inherit;    background: url('')left top no-repeat;    margin-top: -7px;text-align: left;line-height: 80px;font-size: 36px;padding-left: 20px;">
+            优惠券商城        </a>
+
+
+        <div id="showList">
+            <div id="search">
+                <form action="#" method="get">
+                    <input type="hidden" name="r" value="l">
+                    <input type="text" autocomplete="off" class="theme-border-color-1 my-src-input" value="" name="kw" placeholder="零食大礼包"/>
+                    <span class="src-close-btn"></span>
+                    <button class="theme-bg-color-1 my-src-btn">搜 索</button>
+                </form>
+                <ul class="search-land"></ul>
+            </div>
+
+            <dl>
+                <dt class="rg"></dt>
+            </dl>
+            <dl>
+                <dt class="zy"></dt>
+            </dl>
+            <dl>
+                <dt class="qc"></dt>
+            </dl>
+
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+<div id="baner" class="theme-bg-color-1">
+    <div id="nav" style="font-size: 15px;">
+        <a href="javascript:;" class="theme-hover-bg-color-8 iconM active" style="padding:8px 27px;">
+            <span style="margin-right: 7px;">今日上新</span>
+        </a>
+
+        <a class="theme-hover-bg-color-8 lq_live " href="javascript:;" style="padding:8px 15px;position:relative">
+            领券优惠直播
+            <div style="background-repeat: no-repeat;position:absolute; width:62px; height:16px; background-image:url(images/618cms.gif?v=123);right:0;top:-16px;"></div>
+        </a>
+
+        <a class="theme-hover-bg-color-8 " href="javascript:;" style="padding:8px 15px;">
+            限时抢<div style="position:absolute; width:24px; height:32px; background:#FFCC00;margin-left: 98px; margin-top: -25px; background:url(images/HOTT_qeu.gif)"></div>
+        </a>
+
+        <a class="theme-hover-bg-color-8 iconH " href="javascript:;"  style="padding:8px 15px;">
+            超级人气榜
+        </a>
+
+        <a class="theme-hover-bg-color-8 " href="javascript:;" style="padding:8px 15px;">
+            9块9包邮
+        </a>
+
+
+    </div>
+</div>
+
+<div id="dtk_mian">
+
+
+
+
+    <!--banner图片-->
+    <div class="search-wrap main-container" data-linkurl="null">
+        <img src="https://img.alicdn.com/imgextra/i3/97012073/TB2M5hPt0BopuFjSZPcXXc9EpXa_!!97012073.jpg" alt="">
+    </div>
+    <div class="layui-container" style="padding: 10px;border: 1px solid #ccc;background-color:white">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a href="/">首页</a><span lay-separator="">/</span>
+      <a><cite>[[${product.title}]]</cite></a>
+    </span>
+        <div class="layui-row" style="padding-top: 10px">
+            <div class="layui-col-xs4">
+                <div class="layui-carousel" id="test1">
+                    <!--轮播图-->
+                    <div carousel-item>
+                        <img th:src="${cover.picUrl}" alt="" th:each="cover:${covers}">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs8" style="padding: 10px">
+                <ul class="bb-info">
+                    <li class="layui-bg-red" style="padding:10px;line-height: 30px;font-size: 24px">
+                        <h2>活动结束倒计时<span id="ds">0天4时39分59秒</span></h2>
+                    </li>
+
+                    <li style="font-size: 24px">
+                        <h2>[[${product.title}]]</h2>
+                    </li>
+
+                    <li class="layui-bg-green" style="padding:10px;line-height: 30px">
+                        [[${product.subTitle}]]
+                    </li>
+
+                    <li>
+                        <span>售价：</span><span style="font-size: 26px;color: orange;font-weight: bold">
+                        ¥[[${product.price}]]</span>
+                    </li>
+
+                    <li>
+                        <span>运费： 6.0元</span>
+                    </li>
+                    <li>
+                        数量：
+                        <div class="layui-btn-group">
+                            <button class="layui-btn layui-btn-primary layui-btn-sm">
+                                <span style="font-size: 18px">-</span></button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" style="width: 50px">1</button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm"><span style="font-size: 18px">+</span>
+                            </button>
+                        </div>
+                    </li>
+                    <li>
+                        <button class="layui-btn layui-btn-radius layui-btn-normal">立即购买</button>
+                        <button class="layui-btn layui-btn-radius layui-btn-danger">加入购物车</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">产品详情</li>
+                    <li>产品参数</li>
+                    <li>商品评论</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show bb-description layui-col-xs8 layui-col-xs-offset2">
+                        <img th:src="${detail.albumPics}" th:each="detail:${details}" alt="">
+                    </div>
+                    <div class="layui-tab-item layui-col-xs8 layui-col-xs-offset2">
+                        <table class="layui-table bb-param" lay-size="lg">
+                            <colgroup>
+                                <col width="30%">
+                                <col width="70%">
+                            </colgroup>
+                            <tbody>
+                            <tr th:each="p:${params}">
+                                <td>[[${p.productParamName}]]</td>
+                                <td>[[${p.productParamValue}]]</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="comment" class="layui-tab-item layui-col-xs8 layui-col-xs-offset2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/limonte-sweetalert2/7.21.1/sweetalert2.all.js"></script>
+    <script th:inline="javascript">
+        layui.use('carousel', function () {
+            var carousel = layui.carousel;
+            var util = layui.util;
+            carousel.render({
+                elem: '#test1'
+                , width: '380px' //设置容器宽度
+                , height: '380px'
+                , arrow: 'hover' //始终显示箭头
+                , anim: 'fade' //切换动画方式
+            });
+            var endTime = new Date().getTime() + (3600 * 1000 * 24) //假设为结束日期
+                ,serverTime = new Date().getTime(); //假设为当前服务器时间，这里采用的是本地时间，实际使用一般是取服务端的
+            util.countdown(endTime, serverTime, function(date, serverTime, timer){
+                var str = date[0] + '天' + date[1] + '时' +  date[2] + '分' + date[3] + '秒';
+                layui.$('#ds').html(str);
+            });
+        });
+
+        //thymeleaf
+        var pid = [[${product.id}]];
+
+
+
+        //jQuery---> $.get() $.post() $.ajax()
+        //跨域： 协议+ IP + 端口
+        var $ = layui.$;
+        $.get("http://localhost:8080/loadComment","pid="+pid,function(result){
+            //$.each(result,function(index,obj){})
+            for(var i =0;i<result.length;i++){
+                var obj = $("<h5>").html(result[i].createTime+"评论："+result[i].content);
+                $("#comment").append(obj);
+            }
+
+
+        });
+
+
+    </script>
+
+
+
+
+</body>
+</html>

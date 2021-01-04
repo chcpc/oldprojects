@@ -1,0 +1,79 @@
+#配置内容
+#1.配置服务器
+#2.配置thymeleaf缓存
+#3.配置数据源（mysql）
+#4.配置返回前端的日期各式
+#5.配置分页插件pagehelper
+#6.配置映射文件位置
+#7.配置日志输出信息
+#8.redis
+#9.rabbitmq
+
+#配置服务器:端口8080,访问路径
+#server:
+#  port: 8080
+#  servlet:
+#    context-path: /
+#配置thymeleaf缓存取消
+spring:
+  thymeleaf:
+    cache: false
+  #配置数据源
+  #注意：由于使用的的驱动为8.0+的版本，需要设置时区(serverTimezone=GMT+8)。并且需要对+号进行转义
+  datasource:
+    url: jdbc:mysql://localhost:3306/redisproject?serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  #配置返回前端的日期各式
+#  mvc:
+#    date-format: yyyy-MM-dd
+  jackson:
+    date-format: yyyy-MM-dd
+  #redis
+  redis:
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 100
+        max-active: 100
+        min-idle: 10
+        max-wait: 1000ms
+  rabbitmq:
+    host: 192.168.109.131
+    port: 5672
+    virtual-host: /test
+    username: admin
+    password: admin
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动签收
+        concurrency: 1
+        prefetch: 10  # 同时最大处理10个消息
+#  redis:
+#    jedis:
+#      pool:
+#        max-wait: 1000ms
+#        max-active: 100
+#        max-idle: 50
+#        min-idle: 20
+#    sentinel:
+#      master: mymaster
+#      nodes: 192.168.109.131:26379,192.168.109.131:26380,192.168.109.131:26381
+#配置分页插件
+pagehelper:
+  helper-dialect: mysql
+  support-methods-arguments: true
+  params: pageNum=currentPage,pageSize=pageSize
+#配置映射文件位置,并开启驼峰功能。
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+#配置日志输出信息
+logging:
+  level:
+    com.example.demo.mapper: debug
+static:
+  path: e:/temp/detail

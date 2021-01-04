@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <!-- 配置rabbitMQ连接工厂信息 -->
+    <rabbit:connection-factory id="factory" host="192.168.109.131" port="5672" virtual-host="/test" username="admin" password="admin"></rabbit:connection-factory>
+    <!-- 配置队列 -->
+    <rabbit:queue name="xc_queue" auto-declare="true" auto-delete="false" exclusive="false" durable="false"></rabbit:queue>
+    <!-- 将队列和交换机绑定 -->
+    <rabbit:topic-exchange name="topic_exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="xc_queue" pattern="#"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+    <!-- 创建admin -->
+    <rabbit:admin connection-factory="factory"></rabbit:admin>
+    <!-- 启用监听器 -->
+    <rabbit:listener-container connection-factory="factory">
+        <rabbit:listener ref="consumer" method="recv" queue-names="xc_queue"></rabbit:listener>
+    </rabbit:listener-container>
+    <!-- 配置注入消费者 -->
+    <bean id="consumer" class="com.woniuxy.rabbitmq.Consumer"></bean>
+</beans>

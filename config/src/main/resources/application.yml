@@ -1,0 +1,19 @@
+#配置服务应用名称
+spring:
+  application:
+    name: config
+  #配置远程仓库的路径、用户名和密码
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/chcpc/mytest
+          password: qby762224606
+          username: chcpc
+server:
+  port: 9100
+#同样注册到服务注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka

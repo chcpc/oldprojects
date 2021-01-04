@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: service-a
+server:
+  port: 8082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+#通过feign降级，启动服务降级
+feign:
+  hystrix:
+    enabled: true
+#设定服务降级等待时间
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+      #设置断路机制
+      circuitBreaker:
+        requestVolumeThreshold: 3 #设置请求次数
+        sleepWindowInMilliseconds: 5000 #设置断路器重新访问等待的时间
+        errorThresholdPercentage: 50 #出现错误比率
+

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.mapper.InformationsMapper">
+  <!-- 修改查看次数 -->
+  <update id="addviewCountByPrimaryKey">
+    UPDATE informations SET viewCount=(viewCount+1) WHERE id=#{id};
+  </update>
+  <!-- 修改回复次数 -->
+  <update id="addreplyCountByPrimaryKey">
+    UPDATE informations SET replyCount=(replyCount+1) WHERE id=#{infold};
+  </update>
+  <select id="InformationQueryByPage" resultMap="InformationBaseResultMap">
+    select * from informations
+  </select>
+  <resultMap id="InformationBaseResultMap" type="com.woniuxy.pojo.Informations">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="replyCount" jdbcType="INTEGER" property="replycount" />
+    <result column="viewCount" jdbcType="INTEGER" property="viewcount" />
+    <result column="reportTime" jdbcType="TIMESTAMP" property="reporttime" />
+    <result column="lastPostTime" jdbcType="TIMESTAMP" property="lastposttime" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.woniuxy.pojo.Informations">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="replyCount" jdbcType="INTEGER" property="replycount" />
+    <result column="viewCount" jdbcType="INTEGER" property="viewcount" />
+    <result column="reportTime" jdbcType="TIMESTAMP" property="reporttime" />
+    <result column="lastPostTime" jdbcType="TIMESTAMP" property="lastposttime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, content, replyCount, viewCount, reportTime, lastPostTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from informations
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from informations
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.pojo.Informations">
+    insert into informations (id, title, content, 
+      replyCount, viewCount, reportTime, 
+      lastPostTime)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{replycount,jdbcType=INTEGER}, #{viewcount,jdbcType=INTEGER}, #{reporttime,jdbcType=TIMESTAMP}, 
+      #{lastposttime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.pojo.Informations">
+    insert into informations
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="replycount != null">
+        replyCount,
+      </if>
+      <if test="viewcount != null">
+        viewCount,
+      </if>
+      <if test="reporttime != null">
+        reportTime,
+      </if>
+      <if test="lastposttime != null">
+        lastPostTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="replycount != null">
+        #{replycount,jdbcType=INTEGER},
+      </if>
+      <if test="viewcount != null">
+        #{viewcount,jdbcType=INTEGER},
+      </if>
+      <if test="reporttime != null">
+        #{reporttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastposttime != null">
+        #{lastposttime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.pojo.Informations">
+    update informations
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="replycount != null">
+        replyCount = #{replycount,jdbcType=INTEGER},
+      </if>
+      <if test="viewcount != null">
+        viewCount = #{viewcount,jdbcType=INTEGER},
+      </if>
+      <if test="reporttime != null">
+        reportTime = #{reporttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastposttime != null">
+        lastPostTime = #{lastposttime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.pojo.Informations">
+    update informations
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      replyCount = #{replycount,jdbcType=INTEGER},
+      viewCount = #{viewcount,jdbcType=INTEGER},
+      reportTime = #{reporttime,jdbcType=TIMESTAMP},
+      lastPostTime = #{lastposttime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

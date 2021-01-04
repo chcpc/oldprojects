@@ -1,0 +1,12 @@
+
+spring:
+  rabbitmq:
+    host: 192.168.109.131
+    port: 5672
+    virtual-host: /test
+    username: admin
+    password: admin
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动签收
+        concurrency: 1

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="zh-CN">
+    <title>预录单</title>
+    <!--框架必需start-->
+    <script src="/Content/scripts/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/Content/styles/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <script src="/Content/scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!--框架必需end-->
+    <!--bootstrap组件start-->
+    <link href="/Content/scripts/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Content/scripts/bootstrap/bootstrap.min.js"></script>
+    <script src="/Content/scripts/plugins/layout/jquery.layout.js"></script>
+    <script src="/Content/scripts/plugins/datepicker/WdatePicker.js"></script>
+    <link href="/Content/scripts/plugins/jqgrid/jqgrid.css" rel="stylesheet"/>
+    <link href="/Content/scripts/plugins/datetime/pikaday.css" rel="stylesheet"/>
+    <link href="/Content/styles/jet-ui.css" rel="stylesheet"/>
+    <script src="/Content/scripts/plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="/Content/scripts/plugins/jqgrid/jqgrid.js"></script>
+    <script src="/Content/scripts/plugins/tree/tree.js"></script>
+    <script src="/Content/scripts/plugins/validator/validator.js"></script>
+    <script src="/Content/scripts/plugins/datepicker/DatePicker.js"></script>
+    <script src="/Content/scripts/utils/jet-ui.js"></script>
+    <script src="/Content/scripts/utils/jet-form.js"></script>
+    <style>
+        body {
+            margin: 10px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-sm-20">
+        <form id="formSearch" class="form-horizontal">
+            <div class="form-group" style="margin-top:15px">
+                <label class="control-label col-sm-1" style="margin-left: 20px;" for="GOODS_ID">商品ID</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="GOODS_ID" name="GOODS_ID">
+                </div>
+                <label class="control-label col-sm-1" style="width: 120px" for="GOODS_NAM">商品名称 </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="GOODS_NAM">
+                </div>
+                <div class="col-sm-1" style="text-align:center;">
+                    <button type="button"  id="find_btn" class="btn btn-primary">查询</button>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-content">
+            <div class="jqGrid_wrapper">
+                <table id="table_list_2"></table>
+                <div id="pager_list_2" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //当 datatype 为"local" 时需填写
+    var grid_data = [
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试",edit: "测试"
+        }
+        ];
+
+    /* -----------------------------加载表数据  开始  -------------------------------- */
+    $(document).ready(function(){
+        $.jgrid.defaults.styleUI="Bootstrap";
+        $("#table_list_2").jqGrid({
+            height:434,autowidth:true, shrinkToFit:true,/*  autoScroll: false, *//*forceFit: true, */
+            colNames:["商品ID","商品名称","商品单价","库存","上架日期","上架时间","商品描述","操作 "],
+            colModel:[{name:"GOODS_ID",index:"GOODS_ID",autowidth:true,align:"center"},
+                {name:"GOODS_NAM",index:"GOODS_NAM",autowidth:true,align:"center"},
+                {name:"GOODS_PRICE",index:"GOODS_PRICE",autowidth:true,align:"center"},
+                {name:"G_STOCK",index:"G_STOCK",autowidth:true,align:"center"},
+                {name:"UP_SHELVES_DAT",index:"UP_SHELVES_DAT",autowidth:true,align:"center"},
+                {name:"UP_SHELVES_TIM",index:"UP_SHELVES_TIM",autowidth:true,align:"center"},
+                {name:"G_DESC",index:"G_DESC",autowidth:true,align:"center"},
+                {name:"edit",index:"edit",autowidth:true,align:"center"}
+            ],
+            pager:"#pager_list_2",
+            viewrecords:true,hidegrid:false,
+            url:"<%=path %>/terminal/findGoodInfo",
+            data: grid_data,
+            datatype:"local",
+            rownumbers: true,
+            rowNum : 10,
+            rowList : [ 10, 15,30 ],
+            jsonReader: {
+                root:"dataList", page:"currPage", total:"totalpages",          //   很重要 定义了 后台分页参数的名字。
+                records:"totalCount", repeatitems:false, id : "id"
+            },
+            gridComplete: function () {         // 数据加载完成后 添加 采购按钮
+                var ids = jQuery("#table_list_2").jqGrid('getDataIDs');
+                for (var i = 0; i < ids.length; i++) {
+                    var id = ids[i];
+                    var editBtn = "<button  style='color:#f60' onclick='purchase("+ id +")' >采购</button>";
+                    jQuery("#table_list_2").jqGrid('setRowData', ids[i], { edit: editBtn});
+                }
+            },
+        })
+    });
+
+    function purchase(id){
+        var model = jQuery("#table_list_2").jqGrid('getRowData', id);
+        var GOODS_ID = model.GOODS_ID;
+        var GOODS_NAM = model.GOODS_NAM;
+        var GOODS_PRICE = model.GOODS_PRICE;
+    }
+    $(function(){
+        $("#find_btn").click(function(){
+            var GOODS_ID = escape($("#GOODS_ID").val());
+            var GOODS_ID = escape($("#GOODS_NAME").val());
+            $("#table_list_2").jqGrid('setGridParam',{
+                url:"localhost:8080/test/test01.html",
+                postData:{'GOODS_ID':GOODS_ID,'GOODS_NAME':GOODS_NAME}, //发送数据
+                page:1
+            }).trigger("reloadGrid"); //重新载入
+        });
+    });
+</script>
+
+
+</body>
+</html>

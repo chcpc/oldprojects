@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniuxy.redisproject.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.woniuxy.redisproject.pojo.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="promotion_price" jdbcType="DECIMAL" property="promotionPrice" />
+    <result column="sale" jdbcType="VARCHAR" property="sale" />
+    <result column="discount" jdbcType="VARCHAR" property="discount" />
+    <result column="is_free_delivery" jdbcType="VARCHAR" property="isFreeDelivery" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+    <result column="new_status" jdbcType="INTEGER" property="newStatus" />
+    <result column="recommand_status" jdbcType="INTEGER" property="recommandStatus" />
+    <result column="verify_status" jdbcType="INTEGER" property="verifyStatus" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="product_category_id" jdbcType="INTEGER" property="productCategoryId" />
+    <result column="product_category_name" jdbcType="VARCHAR" property="productCategoryName" />
+    <result column="promotion_start_time" jdbcType="TIMESTAMP" property="promotionStartTime" />
+    <result column="promotion_end_time" jdbcType="TIMESTAMP" property="promotionEndTime" />
+    <result column="promotion_per_limit" jdbcType="INTEGER" property="promotionPerLimit" />
+    <result column="promotion_type" jdbcType="INTEGER" property="promotionType" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="sort" jdbcType="VARCHAR" property="sort" />
+    <result column="gift_point" jdbcType="VARCHAR" property="giftPoint" />
+    <result column="use_point_limit" jdbcType="VARCHAR" property="usePointLimit" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="low_stock" jdbcType="VARCHAR" property="lowStock" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, sub_title, price, promotion_price, sale, discount, is_free_delivery, last_update_time, 
+    product_sn, delete_status, publish_status, new_status, recommand_status, verify_status, 
+    brand_id, brand_name, product_category_id, product_category_name, promotion_start_time, 
+    promotion_end_time, promotion_per_limit, promotion_type, pic, sort, gift_point, use_point_limit, 
+    description, stock, low_stock
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.redisproject.pojo.Product">
+    insert into t_product (id, title, sub_title, 
+      price, promotion_price, sale, 
+      discount, is_free_delivery, last_update_time, 
+      product_sn, delete_status, publish_status, 
+      new_status, recommand_status, verify_status, 
+      brand_id, brand_name, product_category_id, 
+      product_category_name, promotion_start_time, 
+      promotion_end_time, promotion_per_limit, 
+      promotion_type, pic, sort, 
+      gift_point, use_point_limit, description, 
+      stock, low_stock)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{promotionPrice,jdbcType=DECIMAL}, #{sale,jdbcType=VARCHAR}, 
+      #{discount,jdbcType=VARCHAR}, #{isFreeDelivery,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{productSn,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}, 
+      #{newStatus,jdbcType=INTEGER}, #{recommandStatus,jdbcType=INTEGER}, #{verifyStatus,jdbcType=INTEGER}, 
+      #{brandId,jdbcType=INTEGER}, #{brandName,jdbcType=VARCHAR}, #{productCategoryId,jdbcType=INTEGER}, 
+      #{productCategoryName,jdbcType=VARCHAR}, #{promotionStartTime,jdbcType=TIMESTAMP}, 
+      #{promotionEndTime,jdbcType=TIMESTAMP}, #{promotionPerLimit,jdbcType=INTEGER}, 
+      #{promotionType,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, 
+      #{giftPoint,jdbcType=VARCHAR}, #{usePointLimit,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{stock,jdbcType=INTEGER}, #{lowStock,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.redisproject.pojo.Product">
+    insert into t_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="subTitle != null">
+        sub_title,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="promotionPrice != null">
+        promotion_price,
+      </if>
+      <if test="sale != null">
+        sale,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="isFreeDelivery != null">
+        is_free_delivery,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time,
+      </if>
+      <if test="productSn != null">
+        product_sn,
+      </if>
+      <if test="deleteStatus != null">
+        delete_status,
+      </if>
+      <if test="publishStatus != null">
+        publish_status,
+      </if>
+      <if test="newStatus != null">
+        new_status,
+      </if>
+      <if test="recommandStatus != null">
+        recommand_status,
+      </if>
+      <if test="verifyStatus != null">
+        verify_status,
+      </if>
+      <if test="brandId != null">
+        brand_id,
+      </if>
+      <if test="brandName != null">
+        brand_name,
+      </if>
+      <if test="productCategoryId != null">
+        product_category_id,
+      </if>
+      <if test="productCategoryName != null">
+        product_category_name,
+      </if>
+      <if test="promotionStartTime != null">
+        promotion_start_time,
+      </if>
+      <if test="promotionEndTime != null">
+        promotion_end_time,
+      </if>
+      <if test="promotionPerLimit != null">
+        promotion_per_limit,
+      </if>
+      <if test="promotionType != null">
+        promotion_type,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="giftPoint != null">
+        gift_point,
+      </if>
+      <if test="usePointLimit != null">
+        use_point_limit,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="lowStock != null">
+        low_stock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null">
+        #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="promotionPrice != null">
+        #{promotionPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="sale != null">
+        #{sale,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=VARCHAR},
+      </if>
+      <if test="isFreeDelivery != null">
+        #{isFreeDelivery,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productSn != null">
+        #{productSn,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="publishStatus != null">
+        #{publishStatus,jdbcType=INTEGER},
+      </if>
+      <if test="newStatus != null">
+        #{newStatus,jdbcType=INTEGER},
+      </if>
+      <if test="recommandStatus != null">
+        #{recommandStatus,jdbcType=INTEGER},
+      </if>
+      <if test="verifyStatus != null">
+        #{verifyStatus,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null">
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null">
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategoryId != null">
+        #{productCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="productCategoryName != null">
+        #{productCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionStartTime != null">
+        #{promotionStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="promotionEndTime != null">
+        #{promotionEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="promotionPerLimit != null">
+        #{promotionPerLimit,jdbcType=INTEGER},
+      </if>
+      <if test="promotionType != null">
+        #{promotionType,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="giftPoint != null">
+        #{giftPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="usePointLimit != null">
+        #{usePointLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="lowStock != null">
+        #{lowStock,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.redisproject.pojo.Product">
+    update t_product
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null">
+        sub_title = #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="promotionPrice != null">
+        promotion_price = #{promotionPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="sale != null">
+        sale = #{sale,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=VARCHAR},
+      </if>
+      <if test="isFreeDelivery != null">
+        is_free_delivery = #{isFreeDelivery,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productSn != null">
+        product_sn = #{productSn,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null">
+        delete_status = #{deleteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="publishStatus != null">
+        publish_status = #{publishStatus,jdbcType=INTEGER},
+      </if>
+      <if test="newStatus != null">
+        new_status = #{newStatus,jdbcType=INTEGER},
+      </if>
+      <if test="recommandStatus != null">
+        recommand_status = #{recommandStatus,jdbcType=INTEGER},
+      </if>
+      <if test="verifyStatus != null">
+        verify_status = #{verifyStatus,jdbcType=INTEGER},
+      </if>
+      <if test="brandId != null">
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null">
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategoryId != null">
+        product_category_id = #{productCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="productCategoryName != null">
+        product_category_name = #{productCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionStartTime != null">
+        promotion_start_time = #{promotionStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="promotionEndTime != null">
+        promotion_end_time = #{promotionEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="promotionPerLimit != null">
+        promotion_per_limit = #{promotionPerLimit,jdbcType=INTEGER},
+      </if>
+      <if test="promotionType != null">
+        promotion_type = #{promotionType,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="giftPoint != null">
+        gift_point = #{giftPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="usePointLimit != null">
+        use_point_limit = #{usePointLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="lowStock != null">
+        low_stock = #{lowStock,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.redisproject.pojo.Product">
+    update t_product
+    set title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      promotion_price = #{promotionPrice,jdbcType=DECIMAL},
+      sale = #{sale,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=VARCHAR},
+      is_free_delivery = #{isFreeDelivery,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      product_sn = #{productSn,jdbcType=VARCHAR},
+      delete_status = #{deleteStatus,jdbcType=INTEGER},
+      publish_status = #{publishStatus,jdbcType=INTEGER},
+      new_status = #{newStatus,jdbcType=INTEGER},
+      recommand_status = #{recommandStatus,jdbcType=INTEGER},
+      verify_status = #{verifyStatus,jdbcType=INTEGER},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      product_category_id = #{productCategoryId,jdbcType=INTEGER},
+      product_category_name = #{productCategoryName,jdbcType=VARCHAR},
+      promotion_start_time = #{promotionStartTime,jdbcType=TIMESTAMP},
+      promotion_end_time = #{promotionEndTime,jdbcType=TIMESTAMP},
+      promotion_per_limit = #{promotionPerLimit,jdbcType=INTEGER},
+      promotion_type = #{promotionType,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR},
+      gift_point = #{giftPoint,jdbcType=VARCHAR},
+      use_point_limit = #{usePointLimit,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
+      low_stock = #{lowStock,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

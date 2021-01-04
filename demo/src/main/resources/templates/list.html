@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h3{
+            text-align: center;
+        }
+        .detail{
+            width: 800px;
+            margin: 0px auto;
+            border: solid 1px black;
+            padding: 10px;
+        }
+        .detail table{
+            border-collapse: collapse;
+
+        }
+        .detail table td{
+            text-align: center;
+            padding: 10px;
+        }
+        .dialog{
+            width:400px;
+            height: 500px;
+            transform:translate(-50%,-50%);
+            position: absolute;
+            left: 50%;
+            top:50%;
+            background-color: white;
+            border:solid 2px blue;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+        }
+        .dialog table{
+            border-collapse: collapse;
+
+        }
+        .dialog table td{
+            padding: 10px;
+        }
+        .dialog table tr td:first-child{
+            text-align: right;
+        }
+        .dialog table tr.last td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="detail">
+        <h3>标准信息列表</h3>
+        <table border="1" width="100%">
+            <tr align="center">
+                <td colspan="7">
+
+                    <form th:action="@{list}">
+                        <input type="text" name="condition" th:value="${condition}">
+                        <input type="submit" th:value="'提交检索'">
+                        <input type="button" th:value="'删除标准'" onclick="removeBatch()">
+                        <input type="button" th:value="'新增标准'" onclick="openDialog()">
+                        <input type="hidden" id="cp" name="currentPage" value="1">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="all" onclick="selectall()" value=""/>
+                </td>
+                <td>标准号</td>
+                <td>中文名称</td>
+                <td>版本</td>
+                <td>发布日期</td>
+                <td>实施日期</td>
+                <td>操作</td>
+            </tr>
+            <tr th:each="standard:${pageInfo.list}">
+                <td>
+                    <input type="checkbox" th:value="${standard.id}" name="id" />
+                </td>
+                <td>[[${standard.stdnum}]]</td>
+                <td>[[${standard.zhname}]]</td>
+                <td>[[${standard.version}]]</td>
+                <td>[[${#dates.format(standard.releasedate,'yyyy-MM-dd')}]]</td>
+                <td>[[${#dates.format(standard.impldate,'yyyy-MM-dd')}]]</td>
+                <td>
+                    <a th:href="@{|/download/${standard.id}|}">下载</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <a href="javascript:searchStand(1)">首页</a>
+                    <a href="javascript:void(0)" th:onclick="|searchStand(${pageInfo.prePage})|" th:if="${pageInfo.hasPreviousPage}">上一页</a>
+                    <span th:if="${!pageInfo.hasPreviousPage}">上一页</span>
+                    <a href="javascript:void(0)" th:onclick="|searchStand(${pageInfo.nextPage})|" th:if="${pageInfo.hasNextPage}">下一页</a>
+                    <span th:if="${!pageInfo.hasNextPage}">下一页</span>
+                    <a href="javascript:void(0)" th:onclick="|searchStand(${pageInfo.navigateLastPage})|">尾页</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="dialog">
+        <h3>增加标准信息</h3>
+        <form action="" method="post">
+            <table width="100%" border="1">
+                <tr>
+                    <td>标准号：</td>
+                    <td>
+                        <input type="text" name="stdnum"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>中文名称：</td>
+                    <td>
+                        <input type="text" name="zhname"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>版本：</td>
+                    <td>
+                        <input type="text" name="version"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>关键字:</td>
+                    <td>
+                        <input type="text" name="stdkeys"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>发布日期：</td>
+                    <td>
+                        <input type="text" name="releasedate"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>实施日期：</td>
+                    <td>
+                        <input type="text" name="impldate"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>附件：</td>
+                    <td>
+                        <input type="file" name="upload"/>
+                    </td>
+                </tr>
+                <tr class="last">
+                    <td colspan="2">
+                        <input type="button" onclick="saveStandard()" value="保存"/>
+                        <input type="button" value="取消" onclick="closeDialog()"/>
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+
+
+    </div>
+
+
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+
+    <script>
+        //page就是当前页
+            function searchStand(page) {
+
+                //获取name属性等于condition值的文本框对象的值
+                var condition = $("[name=condition]").val();
+                $("#cp").val(page);//指定当前页
+                //get(0)将jQuery对象转换为DOM对象
+                document.forms[0].submit();//提交表单
+                //$("form").get(0).submit();
+
+                /*
+                var obj = document.getElementById("");//DOM
+                obj.val();//错误的
+                $(obj).val();//将DOM对象转换为jQuery对象才能调用jQuery提供的API
+                var $obj = $("#id");//jQuery对象
+                $obj.val();
+                $obj.get(0);//转换为dom对象
+
+                */
+            }
+            
+            
+            function removeBatch() {
+                var arr = $(":checkbox:checked");
+                var keys = "";
+                for(var i=0;i<arr.length;i++){
+                    keys+=arr[i].value+",";
+                }
+                keys = keys.substring(0,keys.length-1);
+                alert(keys);
+                $.ajax({
+                    url:'deleteStandard',
+                    type:'delete',
+                    data:"keys="+keys,
+                    success:function (result) {
+                        if(result.code == "0"){
+                            alert(result.msg);
+                            //重新加载数据
+                            window.location.reload();
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                })
+            }
+
+            function openDialog() {
+                $(".dialog").slideDown();
+            }
+        function closeDialog() {
+            $(".dialog").slideUp();
+        }
+
+            function saveStandard() {
+                var data = new FormData();
+                data.append("stdnum",$("[name=stdnum]").val());
+                data.append("zhname",$("[name=zhname]").val());
+                data.append("version",$("[name=version]").val());
+                data.append("stdkeys",$("[name=stdkeys]").val());
+                data.append("releasedate",$("[name=releasedate]").val());
+                data.append("impldate",$("[name=impldate]").val());
+                data.append("file",$("[name=upload]")[0].files[0]);
+                //alert(data.get("stdnum"));
+                console.log(data);
+                $.ajax({
+                    url:"saveStandard",
+                    type:"post",
+                    data:data,
+                    processData:false,
+                    contentType:false,
+                    success:function(result){
+                        if(result.code == "0"){
+                            alert(result.msg);
+                            $(".dialog").slideUp();
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
+            }
+        //全选
+        var oall=document.getElementById("all");
+        var oid=document.getElementsByName("id");
+        function selectall(){//勾选全选时
+
+            for(var i=0;i<oid.length;i++){
+                //所有的选择框和全选一致
+                oid[i].checked=oall.checked;
+            }
+        };
+        //点击复选框
+        for(var i=0;i<oid.length;i++){
+            oid[i].onclick=function(){
+                //判断是否全部选中,遍历集合
+                for(var j=0;j<oid.length;j++){
+                    if(oid[j].checked==false){
+                        oall.checked=false;
+                        break;
+                    }else{
+                        oall.checked=true;
+                    }
+                }
+            };
+        }
+    </script>
+</body>
+</html>

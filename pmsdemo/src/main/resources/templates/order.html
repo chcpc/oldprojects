@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>商品详情</title>
+    <meta name="keywords" content="淘宝优惠券,天猫优惠券,优惠券领取网站,商家内部优惠券,优惠券商城"/>
+    <meta name="description" content="淘宝(天猫)商家内部优惠券免费领取网站,独家优惠券直接领取,领取后可直接下单抵扣,价格超实惠。千万淘宝优惠券每天更新,比双11更低!"/>
+    <link rel="stylesheet" type="text/css" href="css/reset.css?v=201806121902">
+    <link rel="stylesheet" type="text/css" href="css/dtk.css?v=201806121902">
+    <link rel="stylesheet" type="text/css" href="css/detail.css?v=201806121902" />
+    <link href="layui/css/layui.css" rel="stylesheet">
+    <link href="css/cart-2.css?v=2016031003" type="text/css" rel="stylesheet" />
+    <style>
+        html body {
+            background-color: #fff;
+        }
+    </style>
+    <script src="/layui/layui.all.js"></script>
+</head>
+<body>
+<!--顶部推荐位s-->
+<div id="testTop"></div>
+<!--顶部推荐位e-->
+<div id="navTop">
+
+    <div id="top">
+        <div id="topleft" style="margin: 0;line-height: 25px;">每天千款优惠券、只为专注精选！                    </div>
+        <ul id="topright" style="line-height: 25px;">
+            <li style=" margin-right: 8px;">
+                <a class="set_home" href="javascript:;" onclick="SetHome(this,window.location)" style="color: #757575" title="将本站设为首页">设为首页</a>
+            </li>
+            <li style="margin-right: 8px;">
+                <a class="add_favorite" href="javascript:;" onclick="shoucang(document.title,window.location)" style="color: #757575" title="加入收藏，方便下次打开">加入收藏</a>
+            </li>
+            <li>
+                <a class="header_service" target="_blank" href="javascript:;" style="color: #8da7cb" title="联系我帮你解答">遇到购物问题? 联系我 ></a>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="headNav">
+    <div id="header" style="padding-bottom: 16px;">
+        <a class="header_logo" href="javascript:;" style="width: 380px; height: 80px;display: inline-block;float: left;    background-size: inherit;    background: url('')left top no-repeat;    margin-top: -7px;text-align: left;line-height: 80px;font-size: 36px;padding-left: 20px;">
+            优惠券商城        </a>
+        <div id="showList">
+            <div id="search">
+                <form action="#" method="get">
+                    <input type="hidden" name="r" value="l">
+                    <input type="text" autocomplete="off" class="theme-border-color-1 my-src-input" value="" name="kw" placeholder="零食大礼包"/>
+                    <span class="src-close-btn"></span>
+                    <button class="theme-bg-color-1 my-src-btn">搜 索</button>
+                </form>
+                <ul class="search-land"></ul>
+            </div>
+
+            <dl>
+                <dt class="rg"></dt>
+            </dl>
+            <dl>
+                <dt class="zy"></dt>
+            </dl>
+            <dl>
+                <dt class="qc"></dt>
+            </dl>
+
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="baner" class="theme-bg-color-1">
+    <div id="nav" style="font-size: 15px;">
+        <a href="javascript:;" class="theme-hover-bg-color-8 iconM active" style="padding:8px 27px;">
+            <span style="margin-right: 7px;">今日上新</span>
+        </a>
+
+        <a class="theme-hover-bg-color-8 lq_live " href="javascript:;" style="padding:8px 15px;position:relative">
+            领券优惠直播
+            <div style="background-repeat: no-repeat;position:absolute; width:62px; height:16px; background-image:url(images/618cms.gif?v=123);right:0;top:-16px;"></div>
+        </a>
+
+        <a class="theme-hover-bg-color-8 " href="javascript:;" style="padding:8px 15px;">
+            限时抢<div style="position:absolute; width:24px; height:32px; background:#FFCC00;margin-left: 98px; margin-top: -25px; background:url(images/HOTT_qeu.gif)"></div>
+        </a>
+
+        <a class="theme-hover-bg-color-8 iconH " href="javascript:;"  style="padding:8px 15px;">
+            超级人气榜
+        </a>
+
+        <a class="theme-hover-bg-color-8 " href="javascript:;" style="padding:8px 15px;">
+            9块9包邮
+        </a>
+
+
+    </div>
+</div>
+
+<div id="dtk_mian">
+
+
+
+
+    <!--banner图片-->
+    <div class="search-wrap main-container" data-linkurl="null">
+        <img src="https://img.alicdn.com/imgextra/i3/97012073/TB2M5hPt0BopuFjSZPcXXc9EpXa_!!97012073.jpg" alt="">
+    </div>
+    <div class="layui-container" style="padding: 10px;border: 1px solid #ccc;background-color:white">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+    </span>
+        <div class="layui-row" style="padding-top: 10px">
+            <div class="" id="step1">
+                <div class="step">
+                    <div class="address-container address-finish">
+                        <div class="step-title link-box">
+                            <b class="l">配送信息</b>
+                            <a class="l edit" href="javascript:;">添加新地址</a>
+                        </div>
+                        <div class="step-content">
+                            <div class="addr-list clearfix">
+                                <ul>
+                                    <li id="1" class="addr addr-selected" provcode="020" citycode="000001000267" distcode="00000006" provwcscode="020" citywcscode="021" distwcscode="02106" provname="上海" cityname="上海市" distname="普陀区" areacode="" telephone="" extnum="" deliveryregioncode="0210699" receivername="黄金林" receivermobile="180****1538" townwcscode="0210699" towncode="99" townname="全区" detailaddr="中浩云花园23栋2003" smtowncode="0210699" pickupaddress="" defaultaddress="true">
+                                        <div class="inner">
+                                            <div class="addr-hd">
+                                                <span class="name fl">黄金林</span>
+                                                <span class="addr-desc fr"><span class="prov">上海</span>&nbsp;<span class="city">上海市</span></span>
+                                            </div>
+                                            <div title="普陀区全区中浩云花园23栋2003" class="addr-bd">
+                                                <span class="dist">普陀区</span>&nbsp;
+                                                <span class="town">全区</span>&nbsp;
+                                                <span class="street">中浩云花园23栋2003</span>&nbsp;
+                                                <span class="phone">180****1538</span>
+                                            </div>
+                                            <div class="addr-toolbar">
+                                                <span class="addr-opt fr"><a name="new_icart2_add_change" class="modify-addr" href="javascript:void(0);">修改</a><span class="default-addr c9">默认地址</span></span>
+                                            </div>
+                                        </div><a name="new_icart2_add_delete" class="del hide"></a><a class="selected"></a></li>
+                                    <li name="new_icart2_add_addnew01" class="addr add-addr">
+                                        <div class="inner">
+                                            <p class="add-addr-text">添加地址</p>
+                                        </div></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row" style="padding-top: 10px">
+            <div id="step2">
+                <div class="step">
+                    <div class="payment-container">
+                        <div class="step-title link-box">
+                            <b class="l">支付方式</b>
+                        </div>
+                        <div class="step-content clearfix">
+                            <div class="pay-list">
+                                <ul class="clearfix">
+                                    <li name="new_icart2_pay_online01" paytype="01" class="pay-item short-icon-item pay-checked"> <span class="pay-way">在线支付</span> <i class="tip-icon tip-help-16"></i> <i class="check"></i>
+                                        <div class="pay-info-boxes hide">
+                                            <p class="pay-info-box pay-info-box4">支持易付宝和各主流银行的信用卡，借记卡消费<a class="c-2288ec" href="javascript:;" target="_blank">查看银行和限额</a>、<a target="_blank" class="c-2288ec" href="javascript:;">任性付</a></p>
+                                        </div> </li>
+                                    <li name="new_icart2_pay_store" paytype="02" class="pay-item short-icon-item  "> <span class="pay-way">门店付款</span> <i class="tip-icon tip-help-16"></i> <i class="check"></i>
+                                        <div class="pay-info-boxes hide">
+                                            <p class="pay-info-box pay-info-box5">网站下单去门店付款，支持现金、POS机刷卡<a href="javascript:;" target="_blank" class="c-2288ec">查看门店地址</a></p>
+                                        </div> </li>
+                                </ul>
+                                <div class="store-shop-step-box hide" style="display: none;">
+                                    门店付款流程：
+                                    <i class="store-shop-step-icon store-shop-step-icon-one"></i>
+                                    <span class="store-shop-one">待货物到达门店</span>
+                                    <i class="store-shop-step-icon store-shop-step-triangle"></i>
+                                    <i class="store-shop-step-icon store-shop-step-icon-two"></i>
+                                    <span class="store-shop-two">收到短信通知</span>
+                                    <i class="store-shop-step-icon store-shop-step-triangle"></i>
+                                    <i class="store-shop-step-icon store-shop-step-icon-three"></i>
+                                    <span class="store-shop-three">前往门店支付并提货</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row" style="padding-top: 10px">
+            <div id="step3">
+                <div class="step">
+                    <div class="goods-info-container">
+                        <div class="step-title link-box">
+                            <b class="l">商品及服务信息</b>
+                        </div>
+                        <div class="step-content">
+                            <div shopdeliveryfee="0.00" shopname="****旗舰店"
+                                 shopcode="0070075699" class="store mt20 c-store">
+                                <table class="cart-table three-column store-item">
+                                    <tbody>
+                                    <tr class="store-title">
+                                        <th class="first-column"> <span class="store-name l mr10">
+                                            <a name="new_icart2_product_shop" target="_blank" href="javascript:;">***旗舰店</a></span>
+                                            <a onclick="javascript:findpassSupplier('0070075699','','','');" href="javascript:;"
+                                               title="点此可以直接和卖家交流选好的产品，或相互交流网购体验。" class="tm fl"
+                                               name="new_cart2_buy_ask"></a> </th>
+                                        <th colspan="2" class="second-column">服务信息</th>
+                                        <th class="third-column tr">单价</th>
+                                        <th class="fourth-column tr">数量</th>
+                                        <th class="fifth-column tr">小计</th>
+                                    </tr>
+                                    <tr class="product">
+                                        <td class="first-column ">
+                                            <div class="product-box clearfix">
+                                                <a name="new_icart2_product_pic" target="_blank" href="javascript:;" class="product-img-box">
+                                                 </a>
+                                                <div class="product-detail l">
+                                                    <p class="product-name">
+                                                        <a  href="javascript:;" target="_blank" cmmdtyname="全国同城配送" salesprice="228.00" qty="1" storeid="0070075699" listprice="228.00" marketingactivitytype="0" businesssign="0" commdtycode="000000000124734977" id="142000000007260750" activitytype="01" name="new_icart2_product_name"
+                                                            title="全国同城配送 百合款1" class="pageSale">全国同城配送</a>
+                                                        <i id="freightInsurance_000000000124734977_0070075699"></i> </p>
+                                                    <p name="noReason" class="tui-content"> <a name="new_icart2_product_return" target="_blank" href="javascript:;">支持无理由退换货</a> </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="second-column tc" rowspan="1" colspan="2">
+                                            <p class="lh20">支付完成后尽快为您发货</p>
+                                            <p shopcode="0070075699" class="cInstall"></p>
+                                            <p class="lh20">如有疑问请联系<b class="c-f60">18538596880</b></p>
+                                        </td>
+                                        <td colspan="3" class="tr  col-td">
+                                            <div class="col-td-box clearfix">
+                                                <div class="third-column l ">
+                                                    <div class="sn-price">
+                                                        <i>&yen;</i>
+                                                        <em>2228.00</em>
+                                                    </div>
+                                                </div>
+                                                <div class="fourth-column l ">
+                                                    1
+                                                </div>
+                                                <div class="fifth-column l ">
+                                                    <div class="booking_price_one hide">
+                                                        <span class="sn-price font-bold"><span class="booking-promo"></span><i>&yen;</i><em></em></span>
+                                                        <p class="booking-content">（尾款<span class="sn-price"><i>&yen;</i><em></em></span>）</p>
+                                                    </div>
+                                                    <span class="sn-price font-bold booking_price_total"><i>&yen;</i><em>228.00</em></span>
+                                                </div>
+                                            </div> </td>
+                                    </tr>
+
+                                    <tr class="store-message-box">
+                                        <td rowspan="2" colspan="3" class="end-column"> <span class="l">给卖家留言：</span>
+                                            <div class="message-input-box ">
+                                                <textarea class="c-store-message l" flag="0" autocomplete="off">选填：对本次交易的补充说明（所填内容建议已经和卖家达成一致意见）</textarea>
+                                            </div>
+                                            <div class="message-length l">
+                                                <span class="current-length">0</span>
+                                                <span class="max-length">/85</span>
+                                            </div>
+                                            <div class="tip-info"></div> </td>
+                                        <td class="third-column tr no-border-bottom end-column-style"> </td>
+                                        <td class="fouth-column tr no-border-bottom"></td>
+                                        <td class="fifth-column tr no-border-bottom"> 免运费 </td>
+                                    </tr>
+                                    <tr class="store-message-box">
+                                        <td class="third-column tr end-column-style">合计(含运费)</td>
+                                        <td class="fouth-column tr"></td>
+                                        <td class="fifth-column tr"> <span class="sn-price font-bold c-ff4400"> <i>&yen;</i> <em class="booking_price_two hide">0.00</em> <em class="booking_price_amount">228.00</em> </span> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row" style="padding-top: 10px">
+            <div id="step4">
+                <div id="finishDivInvoice" class="step">
+                    <div class="invoice-container invoice-finish">
+                        <div class="step-title link-box">
+                            <b class="l">发票信息</b>
+                        </div>
+                        <div class="step-content">
+                            <p> <input type="hidden" value="05" id="invoiceTypeId" /> <span class="mr20">不开发票</span><span class="mr20">您购买的商品默认为打印购物清单（您的订单有第三方卖家销售的商品，如需开发票，请自行联系商家开具！）</span> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="checkout-bar-boxes" id="step6">
+                <div class="checkout-bar-box checkout-bar-box-fix">
+                    <div class="checkout-bar clearfix">
+                        <div style="float:left;">
+                            <p class="content">收货信息：
+                                <span >黄金林 180****1538 上海上海市普陀区全区中浩云花园23栋2003</span></p>
+                            <p class="content">支付方式：<span>在线支付</span></p>
+                        </div>
+                        <div style="float:left;">
+                            <div class="l">
+                                <p class="sum-pay-price"><span id="sum-pay-text">应付金额：</span><span class="sn-price"><i>&yen;</i><em id="payAmountID">228.00</em></span></p>
+                                <p class="capricious-pay  hide">任性付：期</p>
+                                <p class="checkout-warning capricious-pay">
+                                    <i class="tip-icon tip-warning mr5"></i>提交订单后尽快支付，商品才不会被人抢走哦！</p>
+                            </div>
+                            <a class="checkout-submit-btn cart-btn  l"
+                               style="background-color: #F60;border-radius: 2px;display: inline-block;float: left"
+                               href="javascript:;">提交订单</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="layui-row" style="padding-top: 10px">
+                <!--精品推荐商品列表s-->
+                <div style="font-family: SimSun;margin: 45px auto 30px;font-size: 12px;line-height: 26px;color: #aaa">
+                    <p style="color: #666;font-weight: bold;font-size: 14px;margin-bottom: 10px;font-family: '宋体';">内容声明：</p>
+                    <p class="void_border">
+                        本网站是一家中立的导购网站，网站中的商品信息均来自于互联网。如商品信息不同，可能是商品信息未及时更新引起，所有商品信息请以淘宝/天猫店铺内为准。网站提醒用户，购买商品前注意谨慎核实相关信息。如用户对商品/服务的标题 、价格、详情等任何信息有任何疑问的，请在购买前与商品所属店铺经营者沟通确认。网站存在海量商品信息，如用户发现商品中有任何违法/违规信息，请<a href="javascript:;" style="color: #5384ff">立即反馈</a></p>
+                </div>
+                <!--精品推荐商品列表e-->
+    </div>
+    <script src="https://cdn.bootcss.com/limonte-sweetalert2/7.21.1/sweetalert2.all.js"></script>
+
+
+
+
+</body>
+</html>

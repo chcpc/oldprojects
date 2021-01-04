@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="zh-CN">
+    <title>预录单</title>
+    <!--框架必需start-->
+    <script src="/Content/scripts/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/Content/styles/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <script src="/Content/scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!--框架必需end-->
+    <!--bootstrap组件start-->
+    <link href="/Content/scripts/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Content/scripts/bootstrap/bootstrap.min.js"></script>
+    <script src="/Content/scripts/plugins/layout/jquery.layout.js"></script>
+
+    <link href="/Content/scripts/plugins/jqgrid/jqgrid.css" rel="stylesheet"/>
+
+    <script src="/Content/scripts/plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="/Content/scripts/plugins/jqgrid/jqgrid.js"></script>
+    <style>
+        body {
+            margin: 10px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="ibox-content">
+            <div class="jqGrid_wrapper">
+                <p><h2>基础展示页面</h2></p>
+                <p><h4>1.表格由jqgrid插件实现，发送ajax请求获取到后台的json格式数据（本例获取的是local数据，无需查询方便演示）</h4></p>
+                <p><h4>2.使用插件方法获取到后台数据，并填入到指定id的table中</h4></p>
+                <table id="table_list_2"></table>
+                <div id="pager_list_2" style="width: 100%"></div>
+                <p><h4>3.分页数据填入到指定id的div中，自动形成框表</h4></p>
+                <p><h4>4.可以像excel那样拖动头列改变列宽，可以设置</h4></p>
+                <p><h4>详细信息查看页面中js方法</h4></p>
+            </div>
+        </div>
+
+<script type="text/javascript">
+    //使用变量模拟请求到的json数据。也可以创建本地json文件，并将jqGrid方法中的datatype值改为"json"、url填写为本地json文件地址。
+    //当 datatype 为"local" 时需填写
+    var grid_data = [
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"},
+        {GOODS_ID: "00001",GOODS_NAM: "测试",GOODS_PRICE: "1000",G_STOCK: "abc",UP_SHELVES_DAT: "测试",UP_SHELVES_TIM: "测试",UP_SHELVES_TIM: "测试",G_DESC: "测试"
+        }
+        ];
+
+    /* -----------------------------加载表数据  开始  -------------------------------- */
+    //当 DOM（文档对象模型） 已经加载，并且页面（包括图像）已经完全呈现时，会发生 ready 事件。
+    $(document).ready(function(){
+        $.jgrid.defaults.styleUI="Bootstrap";
+        //获取table_list_2元素，调用jqGrid方法
+        $("#table_list_2").jqGrid({
+            caption:"测试表",//表格名称
+            hidegrid:true,//当caption为true，设定是否可以隐藏表格，点击可以隐藏。为false则没有该键
+
+            // 设定表格中内容的最大高度（px），可以是像素、百分比、也可以自动变化
+            // height: "auto",//自动高度，随行数变jQuery(document).height()则
+            height: $(window).height() - 250, //设置为页面高度-100px
+            autowidth:true,//自适应宽度
+            shrinkToFit:true,//此属性用来说明当初始化列宽度时候的计算类型，如果为ture，则按比例初始化列宽度。如果为false，则列宽度使用colModel指定的宽度
+            /*  autoScroll: false, */
+            /*forceFit: true, */ //当为ture时，调整列宽度不会改变表格的宽度。当shrinkToFit 为false时，此属性会被忽略
+
+            url:"/terminal/findGoodInfo",//获取数据的地址，当datatype为local时此项无效
+            data: grid_data,// 此处为将dom元素作为数据导入到表格中
+            datatype:"local",// 设置为从本地获取数据
+            /* 核心部分：
+            * 页面展示的列名等信息，需要在此处确定，需要指定页面中展示列名、对应的数据、以及每列属性设置。
+            * colNames：即表格的列名称，按照顺序排列
+            * colNodel：表格模型。指定表格的index（与传来的json格式数据的键对应）、name（当没有colNames时起到命名的作用）
+            * 可以试着注释掉colNames查看效果
+            *   */
+            colNames:["商品ID","商品名称","商品单价","库存","上架日期","上架时间","商品描述","操作 "],
+            colModel:[{name:"GOODS_ID",index:"GOODS_ID",autowidth:true,align:"center"},
+                {name:"GOODS_NAM",index:"GOODS_NAM",autowidth:true,align:"center"},
+                {name:"GOODS_PRICE",index:"GOODS_PRICE",autowidth:true,align:"center"},
+                {name:"G_STOCK",index:"G_STOCK",autowidth:true,align:"center"},
+                {name:"UP_SHELVES_DAT",index:"UP_SHELVES_DAT",autowidth:true,align:"center"},
+                {name:"UP_SHELVES_TIM",index:"UP_SHELVES_TIM",autowidth:true,align:"center"},
+                {name:"G_DESC",index:"G_DESC",autowidth:true,align:"center"},
+                {name:"edit",index:"edit",autowidth:true,align:"center"}
+            ],
+            /* pager：分页。将分页内容填入到指定元素中，最好与表格table在同一父元素中 */
+            pager:"#pager_list_2",
+            viewrecords:true,//是否要显示总记录数，可以试着注释掉查看效果
+
+
+            rownumbers: true,// 是显示行序列,为真则会在表格左边新增一列,显示顺序号,从1开始地址
+            rownumWidth: 25,//如果rownumbers为true，则可以设置column的宽度
+
+
+            rowNum : 20,// 初始每页显示的行数
+            rowList : [ 10, 20, 30 ],// 一个数组用来调整表格显示的记录数，此参数值会替代rowNum参数值传给服务器端。
+            page: 2,// 默认初始页数，不设置该属性时默认为1
+
+            // jsonReader：
+            // 很重要 定义了 后台分页参数的名字。
+            // json传来的数据需要指定其含义
+            jsonReader: {
+                root:"dataList",//包含实际数据的数组
+                page:"currPage",//当前页
+                total:"totalpages",//总页数
+                records:"totalCount",//查询出的记录数
+                repeatitems:false,//指明每行的数据是可以重复的，如果设为false，则会从返回的数据中按名字来搜索元素，这个名字就是colModel中的名字
+                id : "id" //行id
+            },
+            prmNames: {//发送数据到服务器，当参数为null时不会被发到服务器端，详细使用查看demo/01basic/web
+                page: "page",
+                rows: "rows",
+                order: "order"
+            },
+
+            beforeRequest: function() {//请求前触发的事件
+                // layer.msg("beforeRequest");
+                console.log("1——beforeRequest");//打开F12查看console，类似于idea控制台
+            },
+            onPaging: function(pgButton) {//点击翻页按钮或点击换行数时触发此事件，也就是重新请求，参数pgButton为翻页，长度为总页数。初次加载时不执行，事件最后执行
+                console.log("onPaging");
+            },
+            gridComplete: function () {//跟onPaging的事件一样，只是这个触发时最后执行。初次加载时也执行，两者事件不冲突
+                console.log("2——gridComplete");
+            },
+            loadComplete: function (xhr) {//当从服务器返回响应时执行，xhr：XMLHttpRequest 对象
+                console.log("3——loadComplete");
+            },
+            onCellSelect: function (rowid,iCol,cellcontent,e) {//当点击单元格时触发。rowid：当前行id；iCol：当前单元格索引；cellContent：当前单元格内容；e：event对象
+                console.log("onCellSelect——rowid:" + rowid);
+                console.log("onCellSelect——iCol:" + iCol);
+                console.log("onCellSelect——cellcontent:" + cellcontent);
+                console.log("onCellSelect——e:" + e);
+            },
+            ondblClickRow: function (rowid,iRow,iCol,e) {//双击行时触发。rowid：当前行id；iRow：当前行索引位置；iCol：当前单元格位置索引；e:event对象
+                console.log("ondblClickRow——rowid:" + rowid);
+                console.log("ondblClickRow——iRow:" + iRow);
+                console.log("ondblClickRow——iCol:" + iCol);
+                console.log("ondblClickRow——e:" + e);
+            },//和鼠标右键事件onRightClickRow一样参数
+            gridComplete: function () {         // 数据加载完成后 添加 采购按钮
+                var ids = jQuery("#table_list_2").jqGrid('getDataIDs');
+                for (var i = 0; i < ids.length; i++) {
+                    var id = ids[i];
+                    var editBtn = "<button  style='color:#f60' onclick='purchase("+ id +")' >采购</button>";
+                    jQuery("#table_list_2").jqGrid('setRowData', ids[i], { edit: editBtn});
+                }
+            },
+        })
+    });
+
+</script>
+
+
+</body>
+</html>
