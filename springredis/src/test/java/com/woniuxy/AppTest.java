@@ -151,5 +151,4 @@ public class AppTest
         BeanUtils.copyProperty(e,"hiredate",map.get("hiredate"));
         System.out.println("hiredate:"+e.getHiredate());
     }
-
 }
